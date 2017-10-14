@@ -1,0 +1,288 @@
+Disassembly Listing for Sequencial 1
+Generated From:
+C:/Users/Nanci/Documents/MPLAB XC8/Projetos/Sequencial 1.X/dist/default/production/Sequencial_1.X.production.elf
+16/02/2016 11:12:54
+
+---  C:/Users/Nanci/Documents/MPLAB XC8/Projetos/Sequencial 1.X/Modulo_Oscilador.c  ---------------------
+1:             /* 
+2:              * File:    Modulo_Oscilador.c
+3:              * Autor:   JABNeto
+4:              * Data:    13/02/2016
+5:              */
+6:             
+7:             #include "Modulo_Oscilador.h"
+8:             
+9:             
+10:            
+11:            //Funções do módulo-----------------------------------
+12:            
+13:            void Oscilador_Inicializacao (void)
+14:            {
+15:                OSCCONbits.IRCF = _OSCCON_IRF;
+10BA  88D3     BSF OSCCON, 4, ACCESS
+10BC  8AD3     BSF OSCCON, 5, ACCESS
+10BE  8CD3     BSF OSCCON, 6, ACCESS
+16:            #if (_PLL_HABILITADO == Sim)
+17:                OSCTUNEbits.PLLEN = 1;
+10C0  8C9B     BSF OSCTUNE, 6, ACCESS
+18:            #endif
+19:            }
+10C2  0012     RETURN 0
+---  C:/Users/Nanci/Documents/MPLAB XC8/Projetos/Sequencial 1.X/Base_1.c  -------------------------------
+1:             /* 
+2:              * File:    Base 1.c
+3:              * Autor:   JABNeto
+4:              * Data:    13/02/2016
+5:              */
+6:             
+7:             #include "Base_1.h"
+8:             
+9:             //Alocação de Memória para o módulo ------------------
+10:            
+11:            
+12:            
+13:            
+14:            
+15:            //Funções do módulo ----------------------------------
+16:            
+17:            /*
+18:             * Latch_Inicializacao
+19:             * Faz a inicialização do Latch MC74HC574 com valor
+20:             * de saída fornecido.
+21:             * A rotina também faz a inicialização do PORT B.
+22:             * No retorno da rotina PORTB = 0.
+23:             * Valor: representa o estado inicial das saídas
+24:             */
+25:            void Latch_Inicializacao (Uchar Valor)
+1018  6E02     MOVWF Valor, ACCESS
+26:            {
+27:                //Inicialização do pino RD3
+28:                //Latch (OE) = 1
+29:                LATDbits.LATD3 = 1;    
+101A  868C     BSF LATD, 3, ACCESS
+30:                TRISDbits.TRISD3 = 0;     
+101C  9695     BCF TRISD, 3, ACCESS
+31:                ANSELDbits.ANSD3 = 0;
+101E  010F     MOVLB 0xF
+1020  973B     BCF 0x3B, 3, BANKED
+32:                
+33:                //Inicialização do pino RD2
+34:                //Latch (CLK) = 0
+35:                LATDbits.LATD2 = 0;    
+1022  948C     BCF LATD, 2, ACCESS
+36:                TRISDbits.TRISD2 = 0;     
+1024  9495     BCF TRISD, 2, ACCESS
+37:                ANSELDbits.ANSD2 = 0;
+1026  010F     MOVLB 0xF
+1028  953B     BCF 0x3B, 2, BANKED
+38:            
+39:                //Inicialização do PORT B
+40:                LATB = 0;
+102A  0E00     MOVLW 0x0
+102C  6E8A     MOVWF LATB, ACCESS
+41:                TRISB = 0;
+102E  0E00     MOVLW 0x0
+1030  6E93     MOVWF TRISB, ACCESS
+42:                ANSELB = 0;
+1032  0E00     MOVLW 0x0
+1034  010F     MOVLB 0xF
+1036  6F39     MOVWF 0x39, BANKED
+43:                
+44:                Latch_EscreveValor(Valor);
+1038  5002     MOVF Valor, W, ACCESS
+103A  EC42     CALL 0x1084, 0
+103C  F008     NOP
+45:                
+46:                LATB = 0;
+103E  0E00     MOVLW 0x0
+1040  6E8A     MOVWF LATB, ACCESS
+47:                LATDbits.LATD3 = 0;    
+1042  968C     BCF LATD, 3, ACCESS
+48:            }
+1044  0012     RETURN 0
+49:            
+50:            /*
+51:             * Latch_EscreveValor
+52:             * Escreve um novo valor no latch MC74HC574
+53:             */
+54:            void Latch_EscreveValor (Uchar Valor)
+1084  6E01     MOVWF __pcstackCOMRAM, ACCESS
+55:            {
+56:                LATB = Valor;
+1086  C001     MOVFF __pcstackCOMRAM, LATB
+1088  FF8A     NOP
+57:                
+58:                //Escreve no latch
+59:                LATDbits.LATD2 = 1;
+108A  848C     BSF LATD, 2, ACCESS
+60:                NOP();
+108C  F000     NOP
+61:                NOP();    
+108E  F000     NOP
+62:                NOP();    
+1090  F000     NOP
+63:                NOP();
+1092  F000     NOP
+64:                LATDbits.LATD2 = 0;     
+1094  948C     BCF LATD, 2, ACCESS
+65:            }
+1096  0012     RETURN 0
+66:            
+67:            /* Display_Inicializacao
+68:             * Faz a inicialização do display
+69:             */
+70:            void Display_Inicializacao (Uchar Valor, Uchar Digito)
+1070  6E05     MOVWF Valor, ACCESS
+71:            {
+72:                Latch_Inicializacao(0);
+1072  0E00     MOVLW 0x0
+1074  EC0C     CALL 0x1018, 0
+1076  F008     NOP
+73:                Display_LigaDigito(Valor,Digito);
+1078  C004     MOVFF Digito, Valor
+107A  F002     NOP
+107C  5005     MOVF Valor, W, ACCESS
+107E  EC4C     CALL 0x1098, 0
+1080  F008     NOP
+74:            }
+1082  0012     RETURN 0
+75:            
+76:            /* Display_LigaDigito
+77:             * Exibe um valor no digito do display especificado.
+78:             * Valor:  Codigo 7 segmentos do caractere a ser
+79:             *         exibido
+80:             * Digito: Codigo de se leção do digito 
+81:             */
+82:            void Display_LigaDigito (Uchar Valor, Uchar Digito)
+1098  6E03     MOVWF Valor, ACCESS
+83:            {
+84:                LATDbits.LATD3 = 1;
+109A  868C     BSF LATD, 3, ACCESS
+85:                Latch_EscreveValor (Digito);
+109C  5002     MOVF Valor, W, ACCESS
+109E  EC42     CALL 0x1084, 0
+10A0  F008     NOP
+86:                LATB = Valor;
+10A2  C003     MOVFF Valor, LATB
+10A4  FF8A     NOP
+87:                LATDbits.LATD3 = 0;    
+10A6  968C     BCF LATD, 3, ACCESS
+88:            }
+10A8  0012     RETURN 0
+89:            
+90:            /* Teclado_Inicializacao
+91:             * Configura os pinos do PORT A que contém
+92:             * as teclas.
+93:             */
+94:            void Teclado_Inicializacao (void)
+95:            {
+96:                ANSELA = 0b00000100;
+97:            }
+98:            
+99:            
+100:           
+101:           
+102:           
+103:           
+104:           
+105:           
+---  C:/Users/Nanci/Documents/MPLAB XC8/Projetos/Sequencial 1.X/App.c  ----------------------------------
+1:             /* 
+2:              * Projeto: Teclado e Display 1
+3:              * Arquivo: App.c
+4:              * Autor:   JABNeto
+5:              * Data:    10/02/2016
+6:              */
+7:             
+8:             #include <stdio.h>
+9:             #include <stdlib.h>
+10:            
+11:            #include "Modulo_Oscilador.h"
+12:            #include "Base_1.h"
+13:            
+14:            //Sequencia de acendimento dos leds
+15:            //                      0b87654321
+16:            #define _SEQ0           0b00000001
+17:            #define _SEQ1           0b00000010
+18:            #define _SEQ2           0b00000100
+19:            #define _SEQ3           0b00001000
+20:            #define _SEQ4           0b00010000
+21:            #define _SEQ5           0b00100000
+22:            #define _SEQ6           0b01000000
+23:            #define _SEQ7           0b10000000
+24:            #define _SEQ8           0b11000000
+25:            #define _SEQ9           0b11100000
+26:            #define _SEQ10          0b11110000
+27:            #define _SEQ11          0b11111000
+28:            #define _SEQ12          0b11111100
+29:            #define _SEQ13          0b11111110
+30:            #define _SEQ14          0b11111111
+31:            #define _SEQ15          0b01111111
+32:            #define _SEQ16          0b00111111
+33:            #define _SEQ17          0b00011111
+34:            #define _SEQ18          0b00001111
+35:            #define _SEQ19          0b00000111
+36:            #define _SEQ20          0b00000011
+37:            #define _SEQ21          0b00000001
+38:            
+39:            
+40:            //Alocação de memória para o Módulo-------------------
+41:            const char Codigo_Seq[] = {_SEQ0,_SEQ1,_SEQ2,_SEQ3,_SEQ4,
+42:                                       _SEQ5,_SEQ6,_SEQ7,_SEQ8,_SEQ9,
+43:                                       _SEQ10,_SEQ11,_SEQ12,_SEQ13,_SEQ14,
+44:                                       _SEQ15,_SEQ16,_SEQ17,_SEQ18,_SEQ19,
+45:                                       _SEQ20,_SEQ21};  
+46:            
+47:            Uchar   Sequencia;
+48:            
+49:            int main(int argc, char** argv)
+50:            {
+51:                Oscilador_Inicializacao();
+1046  EC5D     CALL 0x10BA, 0
+1048  F008     NOP
+52:                Display_Inicializacao(0,_Leds);
+104A  0E40     MOVLW 0x40
+104C  6E04     MOVWF Digito, ACCESS
+104E  0E00     MOVLW 0x0
+1050  EC38     CALL 0x1070, 0
+1052  F008     NOP
+53:                Sequencia = 0;
+1054  0E00     MOVLW 0x0
+1056  6E0B     MOVWF Sequencia, ACCESS
+54:                
+55:                while(1)
+106E  D7F4     BRA 0x1058
+56:                {
+57:                   LATB = Codigo_Seq[Sequencia];
+1058  500B     MOVF Sequencia, W, ACCESS
+106E  D7F4     BRA 0x1058
+105A  0D01     MULLW 0x1
+106E  D7F4     BRA 0x1058
+105C  0E01     MOVLW 0x1
+106E  D7F4     BRA 0x1058
+105E  24F3     ADDWF PROD, W, ACCESS
+106E  D7F4     BRA 0x1058
+1060  6EF6     MOVWF TBLPTR, ACCESS
+106E  D7F4     BRA 0x1058
+1062  0E10     MOVLW 0x10
+106E  D7F4     BRA 0x1058
+1064  20F4     ADDWFC PRODH, W, ACCESS
+106E  D7F4     BRA 0x1058
+1066  6EF7     MOVWF TBLPTRH, ACCESS
+106E  D7F4     BRA 0x1058
+1068  0008     TBLRD*
+106E  D7F4     BRA 0x1058
+106A  CFF5     MOVFF TABLAT, LATB
+106E  D7F4     BRA 0x1058
+106C  FF8A     NOP
+106E  D7F4     BRA 0x1058
+58:                   
+59:                
+60:                    
+61:                    
+62:                    
+63:                }
+64:                    
+65:                return (EXIT_SUCCESS);
+66:            }
+67:            

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="dist/default/production\Teclado_e_Display_2.X.production.hex">
+    <memory name="program">
+      <units>bytes</units>
+      <length>65536</length>
+      <used>200</used>
+      <free>65336</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>3896</length>
+      <used>11</used>
+      <free>3885</free>
+    </memory>
+  </executable>
+</project>

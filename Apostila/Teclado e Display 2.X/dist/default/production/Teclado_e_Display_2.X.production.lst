@@ -1,0 +1,834 @@
+
+
+Microchip Technology PIC18 LITE Macro Assembler V1.36 build -262312587 
+                                                                                               Mon Feb 15 13:32:57 2016
+
+Microchip Technology Omniscient Code Generator v1.36 (Free mode) build 201601150325
+     1                           	processor	18F46K22
+     2                           	fnconf	rparam,??,?,0
+     3                           	opt	pw 120
+     4                           	opt	lm
+     5                           	psect	smallconst,global,reloc=2,class=SMALLCONST,delta=1
+     6                           	psect	cinit,global,reloc=2,class=CODE,delta=1
+     7                           	psect	bssCOMRAM,global,class=COMRAM,space=1,delta=1
+     8                           	psect	cstackCOMRAM,global,class=COMRAM,space=1,delta=1
+     9                           	psect	text0,global,reloc=2,class=CODE,delta=1
+    10                           	psect	text1,global,reloc=2,class=CODE,delta=1
+    11                           	psect	text2,global,reloc=2,class=CODE,delta=1
+    12                           	psect	text3,global,reloc=2,class=CODE,delta=1
+    13                           	psect	text4,global,reloc=2,class=CODE,delta=1
+    14                           	psect	text5,global,reloc=2,class=CODE,delta=1
+    15                           	psect	intsave_regs,global,class=BIGRAM,space=1,delta=1
+    16                           	psect	rparam,global,class=COMRAM,space=1,delta=1
+    17  0000                     
+    18                           	psect	smallconst
+    19  001000                     __psmallconst:
+    20                           	opt stack 0
+    21  001000  00                 	db	0
+    22  001001                     _Codigo_7seg:
+    23                           	opt stack 0
+    24  001001  3F                 	db	63
+    25  001002  06                 	db	6
+    26  001003  5B                 	db	91
+    27  001004  4F                 	db	79
+    28  001005  66                 	db	102
+    29  001006  6D                 	db	109
+    30  001007                     __end_of_Codigo_7seg:
+    31                           	opt stack 0
+    32  0000                     _ANSELA	set	3896
+    33  0000                     _ANSELB	set	3897
+    34  0000                     _ANSELDbits	set	3899
+    35  0000                     _LATB	set	3978
+    36  0000                     _LATDbits	set	3980
+    37  0000                     _PORTAbits	set	3968
+    38  0000                     _TRISB	set	3987
+    39  0000                     _TRISDbits	set	3989
+    40  001007  00                 	db	0	; dummy byte at the end
+    41  0000                     
+    42                           ; #config settings
+    43                           
+    44                           	psect	cinit
+    45  0010B0                     __pcinit:
+    46                           	opt stack 0
+    47  0010B0                     start_initialization:
+    48                           	opt stack 0
+    49  0010B0                     __initialization:
+    50                           	opt stack 0
+    51                           
+    52                           ; Clear objects allocated to COMRAM (1 bytes)
+    53  0010B0  6A0B               	clrf	__pbssCOMRAM& (0+255),c
+    54  0010B2                     end_of_initialization:
+    55                           	opt stack 0
+    56  0010B2                     __end_of__initialization:
+    57                           	opt stack 0
+    58  0010B2  0E00               	movlw	low (__Lsmallconst shr (0+16))
+    59  0010B4  6EF8               	movwf	tblptru,c
+    60  0010B6  0E10               	movlw	high __Lsmallconst
+    61  0010B8  6EF7               	movwf	tblptrh,c
+    62  0010BA  0100               	movlb	0
+    63  0010BC  EF04  F008         	goto	_main	;jump to C main() function
+    64                           tblptru	equ	0xFF8
+    65                           tblptrh	equ	0xFF7
+    66                           
+    67                           	psect	bssCOMRAM
+    68  00000B                     __pbssCOMRAM:
+    69                           	opt stack 0
+    70  00000B                     _Contador:
+    71                           	opt stack 0
+    72  00000B                     	ds	1
+    73                           tblptru	equ	0xFF8
+    74                           tblptrh	equ	0xFF7
+    75                           
+    76                           	psect	cstackCOMRAM
+    77  000001                     __pcstackCOMRAM:
+    78                           	opt stack 0
+    79  000001                     Latch_EscreveValor@Valor:
+    80                           	opt stack 0
+    81                           
+    82                           ; 1 bytes @ 0x0
+    83  000001                     	ds	1
+    84  000002                     Latch_Inicializacao@Valor:
+    85                           	opt stack 0
+    86  000002                     Display_LigaDigito@Digito:
+    87                           	opt stack 0
+    88                           
+    89                           ; 1 bytes @ 0x1
+    90  000002                     	ds	1
+    91  000003                     Display_LigaDigito@Valor:
+    92                           	opt stack 0
+    93                           
+    94                           ; 1 bytes @ 0x2
+    95  000003                     	ds	1
+    96  000004                     Display_Inicializacao@Digito:
+    97                           	opt stack 0
+    98                           
+    99                           ; 1 bytes @ 0x3
+   100  000004                     	ds	1
+   101  000005                     Display_Inicializacao@Valor:
+   102                           	opt stack 0
+   103                           
+   104                           ; 1 bytes @ 0x4
+   105  000005                     	ds	1
+   106  000006                     
+   107                           ; 2 bytes @ 0x5
+   108  000006                     	ds	2
+   109  000008                     
+   110                           ; 3 bytes @ 0x7
+   111  000008                     	ds	3
+   112  00000B                     tblptru	equ	0xFF8
+   113                           tblptrh	equ	0xFF7
+   114                           
+   115                           ; 1 bytes @ 0xA
+   116 ;;
+   117 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   118 ;;
+   119 ;; *************** function _main *****************
+   120 ;; Defined at:
+   121 ;;		line 19 in file "App.c"
+   122 ;; Parameters:    Size  Location     Type
+   123 ;;  argc            2    5[COMRAM] int 
+   124 ;;  argv            3    7[COMRAM] PTR PTR unsigned char 
+   125 ;; Auto vars:     Size  Location     Type
+   126 ;;		None
+   127 ;; Return value:  Size  Location     Type
+   128 ;;                  2    5[COMRAM] int 
+   129 ;; Registers used:
+   130 ;;		wreg, status,2, status,0, tblptrl, tblptrh, tblptru, prodl, prodh, cstack
+   131 ;; Tracked objects:
+   132 ;;		On entry : 0/0
+   133 ;;		On exit  : 0/0
+   134 ;;		Unchanged: 0/0
+   135 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   136 ;;      Params:         5       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   137 ;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   138 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   139 ;;      Totals:         5       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   140 ;;Total ram usage:        5 bytes
+   141 ;; Hardware stack levels required when called:    3
+   142 ;; This function calls:
+   143 ;;		_Display_Inicializacao
+   144 ;;		_Teclado_Inicializacao
+   145 ;; This function is called by:
+   146 ;;		Startup code after reset
+   147 ;; This function uses a non-reentrant model
+   148 ;;
+   149                           
+   150                           	psect	text0
+   151  001008                     __ptext0:
+   152                           	opt stack 0
+   153  001008                     _main:
+   154                           	opt stack 28
+   155                           
+   156                           ;App.c: 21: Display_Inicializacao(0,0b00000001);
+   157                           
+   158                           ;incstack = 0
+   159  001008  0E01               	movlw	1
+   160  00100A  6E04               	movwf	Display_Inicializacao@Digito,c
+   161  00100C  0E00               	movlw	0
+   162  00100E  EC3B  F008         	call	_Display_Inicializacao
+   163                           
+   164                           ;App.c: 22: Teclado_Inicializacao();
+   165  001012  EC60  F008         	call	_Teclado_Inicializacao	;wreg free
+   166  001016  D015               	goto	l756
+   167  001018                     l734:
+   168                           
+   169                           ;App.c: 27: {
+   170                           ;App.c: 28: if (PORTAbits.RA0==1) Contador++;
+   171  001018  B080               	btfsc	3968,0,c	;volatile
+   172  00101A  2A0B               	incf	_Contador,f,c
+   173                           
+   174                           ;App.c: 29: if (PORTAbits.RA1==1) Contador++;
+   175  00101C  B280               	btfsc	3968,1,c	;volatile
+   176  00101E  2A0B               	incf	_Contador,f,c
+   177                           
+   178                           ;App.c: 30: if (PORTAbits.RA3==1) Contador++;
+   179  001020  B680               	btfsc	3968,3,c	;volatile
+   180  001022  2A0B               	incf	_Contador,f,c
+   181                           
+   182                           ;App.c: 31: if (PORTAbits.RA4==1) Contador++;
+   183  001024  B880               	btfsc	3968,4,c	;volatile
+   184  001026  2A0B               	incf	_Contador,f,c
+   185                           
+   186                           ;App.c: 32: if (PORTAbits.RA5==1) Contador++;
+   187  001028  BA80               	btfsc	3968,5,c	;volatile
+   188  00102A  2A0B               	incf	_Contador,f,c
+   189                           
+   190                           ;App.c: 34: LATB = Codigo_7seg[Contador];
+   191  00102C  500B               	movf	_Contador,w,c
+   192  00102E  0D01               	mullw	1
+   193  001030  0E01               	movlw	low _Codigo_7seg
+   194  001032  24F3               	addwf	prodl,w,c
+   195  001034  6EF6               	movwf	tblptrl,c
+   196  001036  0E10               	movlw	high _Codigo_7seg
+   197  001038  20F4               	addwfc	prodh,w,c
+   198  00103A  6EF7               	movwf	tblptrh,c
+   199  00103C                     	if	0	;There are less than 3 active tblptr bytes
+   200  00103C                     	endif
+   201  00103C  0008               	tblrd		*
+   202  00103E  CFF5 FF8A          	movff	tablat,3978	;volatile
+   203  001042                     l756:
+   204                           
+   205                           ;App.c: 35: Contador = 0;
+   206  001042  0E00               	movlw	0
+   207  001044  6E0B               	movwf	_Contador,c
+   208  001046  D7E8               	goto	l734
+   209  001048                     __end_of_main:
+   210                           	opt stack 0
+   211                           tblptru	equ	0xFF8
+   212                           tblptrh	equ	0xFF7
+   213                           tblptrl	equ	0xFF6
+   214                           tablat	equ	0xFF5
+   215                           prodh	equ	0xFF4
+   216                           prodl	equ	0xFF3
+   217                           
+   218 ;; *************** function _Teclado_Inicializacao *****************
+   219 ;; Defined at:
+   220 ;;		line 94 in file "Base_1.c"
+   221 ;; Parameters:    Size  Location     Type
+   222 ;;		None
+   223 ;; Auto vars:     Size  Location     Type
+   224 ;;		None
+   225 ;; Return value:  Size  Location     Type
+   226 ;;                  1    wreg      void 
+   227 ;; Registers used:
+   228 ;;		wreg, status,2
+   229 ;; Tracked objects:
+   230 ;;		On entry : 0/0
+   231 ;;		On exit  : 0/0
+   232 ;;		Unchanged: 0/0
+   233 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   234 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   235 ;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   236 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   237 ;;      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   238 ;;Total ram usage:        0 bytes
+   239 ;; Hardware stack levels used:    1
+   240 ;; This function calls:
+   241 ;;		Nothing
+   242 ;; This function is called by:
+   243 ;;		_main
+   244 ;; This function uses a non-reentrant model
+   245 ;;
+   246                           
+   247                           	psect	text1
+   248  0010C0                     __ptext1:
+   249                           	opt stack 0
+   250  0010C0                     _Teclado_Inicializacao:
+   251                           	opt stack 30
+   252                           
+   253                           ;Base_1.c: 96: ANSELA = 0b00000100;
+   254                           
+   255                           ;incstack = 0
+   256  0010C0  0E04               	movlw	4
+   257  0010C2  010F               	movlb	15	; () banked
+   258  0010C4  6F38               	movwf	56,b	;volatile
+   259                           
+   260                           ; BSR set to: 15
+   261  0010C6  0012               	return		;funcret
+   262  0010C8                     __end_of_Teclado_Inicializacao:
+   263                           	opt stack 0
+   264                           tblptru	equ	0xFF8
+   265                           tblptrh	equ	0xFF7
+   266                           tblptrl	equ	0xFF6
+   267                           tablat	equ	0xFF5
+   268                           prodh	equ	0xFF4
+   269                           prodl	equ	0xFF3
+   270                           
+   271 ;; *************** function _Display_Inicializacao *****************
+   272 ;; Defined at:
+   273 ;;		line 70 in file "Base_1.c"
+   274 ;; Parameters:    Size  Location     Type
+   275 ;;  Valor           1    wreg     unsigned char 
+   276 ;;  Digito          1    3[COMRAM] unsigned char 
+   277 ;; Auto vars:     Size  Location     Type
+   278 ;;  Valor           1    4[COMRAM] unsigned char 
+   279 ;; Return value:  Size  Location     Type
+   280 ;;                  1    wreg      void 
+   281 ;; Registers used:
+   282 ;;		wreg, status,2, cstack
+   283 ;; Tracked objects:
+   284 ;;		On entry : 0/0
+   285 ;;		On exit  : 0/0
+   286 ;;		Unchanged: 0/0
+   287 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   288 ;;      Params:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   289 ;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   290 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   291 ;;      Totals:         2       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   292 ;;Total ram usage:        2 bytes
+   293 ;; Hardware stack levels used:    1
+   294 ;; Hardware stack levels required when called:    2
+   295 ;; This function calls:
+   296 ;;		_Display_LigaDigito
+   297 ;;		_Latch_Inicializacao
+   298 ;; This function is called by:
+   299 ;;		_main
+   300 ;; This function uses a non-reentrant model
+   301 ;;
+   302                           
+   303                           	psect	text2
+   304  001076                     __ptext2:
+   305                           	opt stack 0
+   306  001076                     _Display_Inicializacao:
+   307                           	opt stack 28
+   308                           
+   309                           ; BSR set to: 15
+   310                           ;incstack = 0
+   311                           ;Display_Inicializacao@Valor stored from wreg
+   312  001076  6E05               	movwf	Display_Inicializacao@Valor,c
+   313                           
+   314                           ;Base_1.c: 72: Latch_Inicializacao(0);
+   315  001078  0E00               	movlw	0
+   316  00107A  EC24  F008         	call	_Latch_Inicializacao
+   317                           
+   318                           ;Base_1.c: 73: Display_LigaDigito(Valor,Digito);
+   319  00107E  C004  F002         	movff	Display_Inicializacao@Digito,Display_LigaDigito@Digito
+   320  001082  5005               	movf	Display_Inicializacao@Valor,w,c
+   321  001084  EC4F  F008         	call	_Display_LigaDigito
+   322  001088  0012               	return		;funcret
+   323  00108A                     __end_of_Display_Inicializacao:
+   324                           	opt stack 0
+   325                           tblptru	equ	0xFF8
+   326                           tblptrh	equ	0xFF7
+   327                           tblptrl	equ	0xFF6
+   328                           tablat	equ	0xFF5
+   329                           prodh	equ	0xFF4
+   330                           prodl	equ	0xFF3
+   331                           
+   332 ;; *************** function _Latch_Inicializacao *****************
+   333 ;; Defined at:
+   334 ;;		line 25 in file "Base_1.c"
+   335 ;; Parameters:    Size  Location     Type
+   336 ;;  Valor           1    wreg     unsigned char 
+   337 ;; Auto vars:     Size  Location     Type
+   338 ;;  Valor           1    1[COMRAM] unsigned char 
+   339 ;; Return value:  Size  Location     Type
+   340 ;;                  1    wreg      void 
+   341 ;; Registers used:
+   342 ;;		wreg, status,2, cstack
+   343 ;; Tracked objects:
+   344 ;;		On entry : 0/0
+   345 ;;		On exit  : 0/0
+   346 ;;		Unchanged: 0/0
+   347 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   348 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   349 ;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   350 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   351 ;;      Totals:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   352 ;;Total ram usage:        1 bytes
+   353 ;; Hardware stack levels used:    1
+   354 ;; Hardware stack levels required when called:    1
+   355 ;; This function calls:
+   356 ;;		_Latch_EscreveValor
+   357 ;; This function is called by:
+   358 ;;		_Display_Inicializacao
+   359 ;; This function uses a non-reentrant model
+   360 ;;
+   361                           
+   362                           	psect	text3
+   363  001048                     __ptext3:
+   364                           	opt stack 0
+   365  001048                     _Latch_Inicializacao:
+   366                           	opt stack 28
+   367                           
+   368                           ;incstack = 0
+   369                           ;Latch_Inicializacao@Valor stored from wreg
+   370  001048  6E02               	movwf	Latch_Inicializacao@Valor,c
+   371                           
+   372                           ;Base_1.c: 29: LATDbits.LATD3 = 1;
+   373  00104A  868C               	bsf	3980,3,c	;volatile
+   374                           
+   375                           ;Base_1.c: 30: TRISDbits.TRISD3 = 0;
+   376  00104C  9695               	bcf	3989,3,c	;volatile
+   377                           
+   378                           ;Base_1.c: 31: ANSELDbits.ANSD3 = 0;
+   379  00104E  010F               	movlb	15	; () banked
+   380  001050  973B               	bcf	59,3,b	;volatile
+   381                           
+   382                           ;Base_1.c: 35: LATDbits.LATD2 = 0;
+   383  001052  948C               	bcf	3980,2,c	;volatile
+   384                           
+   385                           ;Base_1.c: 36: TRISDbits.TRISD2 = 0;
+   386  001054  9495               	bcf	3989,2,c	;volatile
+   387                           
+   388                           ;Base_1.c: 37: ANSELDbits.ANSD2 = 0;
+   389  001056  010F               	movlb	15	; () banked
+   390  001058  953B               	bcf	59,2,b	;volatile
+   391                           
+   392                           ; BSR set to: 15
+   393                           ;Base_1.c: 40: LATB = 0;
+   394  00105A  0E00               	movlw	0
+   395  00105C  6E8A               	movwf	3978,c	;volatile
+   396                           
+   397                           ;Base_1.c: 41: TRISB = 0;
+   398  00105E  0E00               	movlw	0
+   399  001060  6E93               	movwf	3987,c	;volatile
+   400                           
+   401                           ;Base_1.c: 42: ANSELB = 0;
+   402  001062  0E00               	movlw	0
+   403  001064  010F               	movlb	15	; () banked
+   404  001066  6F39               	movwf	57,b	;volatile
+   405                           
+   406                           ; BSR set to: 15
+   407                           ;Base_1.c: 44: Latch_EscreveValor(Valor);
+   408  001068  5002               	movf	Latch_Inicializacao@Valor,w,c
+   409  00106A  EC45  F008         	call	_Latch_EscreveValor
+   410                           
+   411                           ;Base_1.c: 46: LATB = 0;
+   412  00106E  0E00               	movlw	0
+   413  001070  6E8A               	movwf	3978,c	;volatile
+   414                           
+   415                           ;Base_1.c: 47: LATDbits.LATD3 = 0;
+   416  001072  968C               	bcf	3980,3,c	;volatile
+   417  001074  0012               	return		;funcret
+   418  001076                     __end_of_Latch_Inicializacao:
+   419                           	opt stack 0
+   420                           tblptru	equ	0xFF8
+   421                           tblptrh	equ	0xFF7
+   422                           tblptrl	equ	0xFF6
+   423                           tablat	equ	0xFF5
+   424                           prodh	equ	0xFF4
+   425                           prodl	equ	0xFF3
+   426                           
+   427 ;; *************** function _Display_LigaDigito *****************
+   428 ;; Defined at:
+   429 ;;		line 82 in file "Base_1.c"
+   430 ;; Parameters:    Size  Location     Type
+   431 ;;  Valor           1    wreg     unsigned char 
+   432 ;;  Digito          1    1[COMRAM] unsigned char 
+   433 ;; Auto vars:     Size  Location     Type
+   434 ;;  Valor           1    2[COMRAM] unsigned char 
+   435 ;; Return value:  Size  Location     Type
+   436 ;;                  1    wreg      void 
+   437 ;; Registers used:
+   438 ;;		wreg, status,2, cstack
+   439 ;; Tracked objects:
+   440 ;;		On entry : 0/0
+   441 ;;		On exit  : 0/0
+   442 ;;		Unchanged: 0/0
+   443 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   444 ;;      Params:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   445 ;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   446 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   447 ;;      Totals:         2       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   448 ;;Total ram usage:        2 bytes
+   449 ;; Hardware stack levels used:    1
+   450 ;; Hardware stack levels required when called:    1
+   451 ;; This function calls:
+   452 ;;		_Latch_EscreveValor
+   453 ;; This function is called by:
+   454 ;;		_Display_Inicializacao
+   455 ;; This function uses a non-reentrant model
+   456 ;;
+   457                           
+   458                           	psect	text4
+   459  00109E                     __ptext4:
+   460                           	opt stack 0
+   461  00109E                     _Display_LigaDigito:
+   462                           	opt stack 28
+   463                           
+   464                           ;incstack = 0
+   465                           ;Display_LigaDigito@Valor stored from wreg
+   466  00109E  6E03               	movwf	Display_LigaDigito@Valor,c
+   467                           
+   468                           ;Base_1.c: 84: LATDbits.LATD3 = 1;
+   469  0010A0  868C               	bsf	3980,3,c	;volatile
+   470                           
+   471                           ;Base_1.c: 85: Latch_EscreveValor (Digito);
+   472  0010A2  5002               	movf	Display_LigaDigito@Digito,w,c
+   473  0010A4  EC45  F008         	call	_Latch_EscreveValor
+   474                           
+   475                           ;Base_1.c: 86: LATB = Valor;
+   476  0010A8  C003  FF8A         	movff	Display_LigaDigito@Valor,3978	;volatile
+   477                           
+   478                           ;Base_1.c: 87: LATDbits.LATD3 = 0;
+   479  0010AC  968C               	bcf	3980,3,c	;volatile
+   480  0010AE  0012               	return		;funcret
+   481  0010B0                     __end_of_Display_LigaDigito:
+   482                           	opt stack 0
+   483                           tblptru	equ	0xFF8
+   484                           tblptrh	equ	0xFF7
+   485                           tblptrl	equ	0xFF6
+   486                           tablat	equ	0xFF5
+   487                           prodh	equ	0xFF4
+   488                           prodl	equ	0xFF3
+   489                           
+   490 ;; *************** function _Latch_EscreveValor *****************
+   491 ;; Defined at:
+   492 ;;		line 54 in file "Base_1.c"
+   493 ;; Parameters:    Size  Location     Type
+   494 ;;  Valor           1    wreg     unsigned char 
+   495 ;; Auto vars:     Size  Location     Type
+   496 ;;  Valor           1    0[COMRAM] unsigned char 
+   497 ;; Return value:  Size  Location     Type
+   498 ;;                  1    wreg      void 
+   499 ;; Registers used:
+   500 ;;		wreg
+   501 ;; Tracked objects:
+   502 ;;		On entry : 0/0
+   503 ;;		On exit  : 0/0
+   504 ;;		Unchanged: 0/0
+   505 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   506 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   507 ;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   508 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   509 ;;      Totals:         1       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   510 ;;Total ram usage:        1 bytes
+   511 ;; Hardware stack levels used:    1
+   512 ;; This function calls:
+   513 ;;		Nothing
+   514 ;; This function is called by:
+   515 ;;		_Latch_Inicializacao
+   516 ;;		_Display_LigaDigito
+   517 ;; This function uses a non-reentrant model
+   518 ;;
+   519                           
+   520                           	psect	text5
+   521  00108A                     __ptext5:
+   522                           	opt stack 0
+   523  00108A                     _Latch_EscreveValor:
+   524                           	opt stack 28
+   525                           
+   526                           ;incstack = 0
+   527                           ;Latch_EscreveValor@Valor stored from wreg
+   528  00108A  6E01               	movwf	Latch_EscreveValor@Valor,c
+   529                           
+   530                           ;Base_1.c: 56: LATB = Valor;
+   531  00108C  C001  FF8A         	movff	Latch_EscreveValor@Valor,3978	;volatile
+   532                           
+   533                           ;Base_1.c: 59: LATDbits.LATD2 = 1;
+   534  001090  848C               	bsf	3980,2,c	;volatile
+   535                           
+   536                           ;Base_1.c: 60: __nop();
+   537  001092  F000               	nop	
+   538                           
+   539                           ;Base_1.c: 61: __nop();
+   540  001094  F000               	nop	
+   541                           
+   542                           ;Base_1.c: 62: __nop();
+   543  001096  F000               	nop	
+   544                           
+   545                           ;Base_1.c: 63: __nop();
+   546  001098  F000               	nop	
+   547                           
+   548                           ;Base_1.c: 64: LATDbits.LATD2 = 0;
+   549  00109A  948C               	bcf	3980,2,c	;volatile
+   550  00109C  0012               	return		;funcret
+   551  00109E                     __end_of_Latch_EscreveValor:
+   552                           	opt stack 0
+   553                           tblptru	equ	0xFF8
+   554                           tblptrh	equ	0xFF7
+   555                           tblptrl	equ	0xFF6
+   556                           tablat	equ	0xFF5
+   557                           prodh	equ	0xFF4
+   558                           prodl	equ	0xFF3
+   559                           tblptru	equ	0xFF8
+   560                           tblptrh	equ	0xFF7
+   561                           tblptrl	equ	0xFF6
+   562                           tablat	equ	0xFF5
+   563                           prodh	equ	0xFF4
+   564                           prodl	equ	0xFF3
+   565                           
+   566                           	psect	rparam
+   567  0000                     tblptru	equ	0xFF8
+   568                           tblptrh	equ	0xFF7
+   569                           tblptrl	equ	0xFF6
+   570                           tablat	equ	0xFF5
+   571                           prodh	equ	0xFF4
+   572                           prodl	equ	0xFF3
+
+
+Data Sizes:
+    Strings     0
+    Constant    6
+    Data        0
+    BSS         1
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMRAM           95     10      11
+    BANK0           160      0       0
+    BANK1           256      0       0
+    BANK2           256      0       0
+    BANK3           256      0       0
+    BANK4           256      0       0
+    BANK5           256      0       0
+    BANK6           256      0       0
+    BANK7           256      0       0
+    BANK8           256      0       0
+    BANK9           256      0       0
+    BANK10          256      0       0
+    BANK11          256      0       0
+    BANK12          256      0       0
+    BANK13          256      0       0
+    BANK14          256      0       0
+    BANK15           56      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMRAM
+
+    _main->_Display_Inicializacao
+    _Display_Inicializacao->_Display_LigaDigito
+    _Latch_Inicializacao->_Latch_EscreveValor
+    _Display_LigaDigito->_Latch_EscreveValor
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _main in BANK3
+
+    None.
+
+Critical Paths under _main in BANK4
+
+    None.
+
+Critical Paths under _main in BANK5
+
+    None.
+
+Critical Paths under _main in BANK6
+
+    None.
+
+Critical Paths under _main in BANK7
+
+    None.
+
+Critical Paths under _main in BANK8
+
+    None.
+
+Critical Paths under _main in BANK9
+
+    None.
+
+Critical Paths under _main in BANK10
+
+    None.
+
+Critical Paths under _main in BANK11
+
+    None.
+
+Critical Paths under _main in BANK12
+
+    None.
+
+Critical Paths under _main in BANK13
+
+    None.
+
+Critical Paths under _main in BANK14
+
+    None.
+
+Critical Paths under _main in BANK15
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 5     0      5     219
+                                              5 COMRAM     5     0      5
+              _Display_Inicializacao
+              _Teclado_Inicializacao
+ ---------------------------------------------------------------------------------
+ (1) _Teclado_Inicializacao                                0     0      0       0
+ ---------------------------------------------------------------------------------
+ (1) _Display_Inicializacao                                2     1      1     219
+                                              3 COMRAM     2     1      1
+                 _Display_LigaDigito
+                _Latch_Inicializacao
+ ---------------------------------------------------------------------------------
+ (2) _Latch_Inicializacao                                  1     1      0      30
+                                              1 COMRAM     1     1      0
+                 _Latch_EscreveValor
+ ---------------------------------------------------------------------------------
+ (2) _Display_LigaDigito                                   2     1      1     102
+                                              1 COMRAM     2     1      1
+                 _Latch_EscreveValor
+ ---------------------------------------------------------------------------------
+ (3) _Latch_EscreveValor                                   1     1      0      15
+                                              0 COMRAM     1     1      0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 3
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _Display_Inicializacao
+     _Display_LigaDigito
+       _Latch_EscreveValor
+     _Latch_Inicializacao
+       _Latch_EscreveValor
+   _Teclado_Inicializacao
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BIGRAM             F37      0       0      37        0.0%
+EEDATA             400      0       0       0        0.0%
+BITBANK14          100      0       0      33        0.0%
+BANK14             100      0       0      34        0.0%
+BITBANK13          100      0       0      31        0.0%
+BANK13             100      0       0      32        0.0%
+BITBANK12          100      0       0      29        0.0%
+BANK12             100      0       0      30        0.0%
+BITBANK11          100      0       0      27        0.0%
+BANK11             100      0       0      28        0.0%
+BITBANK10          100      0       0      25        0.0%
+BANK10             100      0       0      26        0.0%
+BITBANK9           100      0       0      23        0.0%
+BANK9              100      0       0      24        0.0%
+BITBANK8           100      0       0      21        0.0%
+BANK8              100      0       0      22        0.0%
+BITBANK7           100      0       0      19        0.0%
+BANK7              100      0       0      20        0.0%
+BITBANK6           100      0       0      17        0.0%
+BANK6              100      0       0      18        0.0%
+BITBANK5           100      0       0      15        0.0%
+BANK5              100      0       0      16        0.0%
+BITBANK4           100      0       0      13        0.0%
+BANK4              100      0       0      14        0.0%
+BITBANK3           100      0       0      10        0.0%
+BANK3              100      0       0      11        0.0%
+BITBANK2           100      0       0       8        0.0%
+BANK2              100      0       0       9        0.0%
+BITBANK1           100      0       0       6        0.0%
+BANK1              100      0       0       7        0.0%
+BITBANK0            A0      0       0       4        0.0%
+BANK0               A0      0       0       5        0.0%
+BITCOMRAM           5F      0       0       0        0.0%
+COMRAM              5F      A       B       1       11.6%
+BITBANK15           38      0       0      35        0.0%
+BANK15              38      0       0      36        0.0%
+BITSFR_1             0      0       0      40        0.0%
+SFR_1                0      0       0      40        0.0%
+BITSFR               0      0       0      40        0.0%
+SFR                  0      0       0      40        0.0%
+STACK                0      0       0       2        0.0%
+NULL                 0      0       0       0        0.0%
+ABS                  0      0       B      12        0.0%
+DATA                 0      0       B       3        0.0%
+CODE                 0      0       0       0        0.0%
+
+
+Microchip Technology PIC18 Macro Assembler V1.36 build -262312587 
+Symbol Table                                                                                   Mon Feb 15 13:32:57 2016
+
+                           l734 1018                             l756 1042     __size_of_Latch_EscreveValor 0014  
+           __end_of_Codigo_7seg 1007                            _LATB 000F8A                            _main 1008  
+                          prodh 000FF4                            prodl 000FF3                            start 0000  
+                  ___param_bank 000010                           ?_main 0006                           _TRISB 000F93  
+    Display_Inicializacao@Valor 0005                           tablat 000FF5    __size_of_Latch_Inicializacao 002E  
+               __initialization 10B0                    __end_of_main 1048                     _Codigo_7seg 1001  
+                        ??_main 000B                   __activetblptr 000001                          _ANSELA 000F38  
+                        _ANSELB 000F39     __size_of_Display_LigaDigito 0012  __size_of_Display_Inicializacao 0014  
+ __end_of_Display_Inicializacao 108A           _Teclado_Inicializacao 10C0                    __mediumconst 0000  
+                        tblptrh 000FF7                          tblptrl 000FF6                          tblptru 000FF8  
+                    __accesstop 0060         __end_of__initialization 10B2                   ___rparam_used 000001  
+                __pcstackCOMRAM 0001        Latch_Inicializacao@Valor 0002          ?_Teclado_Inicializacao 0001  
+    __end_of_Latch_EscreveValor 109E             _Latch_Inicializacao 1048            ?_Latch_Inicializacao 0001  
+                       __Hparam 0000                         __Lparam 0000                    __psmallconst 1000  
+                       __pcinit 10B0                         __ramtop 1000                         __ptext0 1008  
+                       __ptext1 10C0                         __ptext2 1076                         __ptext3 1048  
+                       __ptext4 109E                         __ptext5 108A         Display_LigaDigito@Valor 0003  
+          end_of_initialization 10B2           ??_Latch_Inicializacao 0002                       _PORTAbits 000F80  
+                     _TRISDbits 000F95      __end_of_Display_LigaDigito 10B0           _Display_Inicializacao 1076  
+           start_initialization 10B0         ??_Teclado_Inicializacao 0001                     __pbssCOMRAM 000B  
+            _Latch_EscreveValor 108A          ?_Display_Inicializacao 0004             ?_Latch_EscreveValor 0001  
+                   __smallconst 1000            ??_Latch_EscreveValor 0001                        _LATDbits 000F8C  
+   Display_Inicializacao@Digito 0004                        _Contador 000B     __end_of_Latch_Inicializacao 1076  
+            _Display_LigaDigito 109E                        __Hrparam 0000                        __Lrparam 0000  
+                  __Lsmallconst 1000             ?_Display_LigaDigito 0002                      _ANSELDbits 000F3B  
+          ??_Display_LigaDigito 0003        Display_LigaDigito@Digito 0002  __size_of_Teclado_Inicializacao 0008  
+ __end_of_Teclado_Inicializacao 10C8                   __size_of_main 0040                        main@argc 0006  
+                      main@argv 0008         Latch_EscreveValor@Valor 0001         ??_Display_Inicializacao 0005  

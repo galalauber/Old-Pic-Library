@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="dist/default/production\Teclado_e_leds_2.X.production.hex">
+    <memory name="program">
+      <units>bytes</units>
+      <length>64513</length>
+      <used>90</used>
+      <free>64423</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>3896</length>
+      <used>6</used>
+      <free>3890</free>
+    </memory>
+  </executable>
+</project>
