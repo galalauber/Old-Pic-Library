@@ -1,33 +1,31 @@
 /* 
- * Arquivo: Fvr.c
- * Autor:   JABNeto
- * Versao:  2016.05.19
+ *  Arquivo:    Fvr.c
+ *  uC:         PIC18F46K22
+ *  Autor:      JABNeto
+ *  Versão:     161011 
  */
 
-
 #include "Fvr.h"
+
 
 //Alocação de memória para o módulo -------------------------------------------
 
 
 
-//Funções locais --------------------------------------------------------------
+//Funções Locais --------------------------------------------------------------
 
 
 
-//Funções publicas ------------------------------------------------------------
 
+//Funções Públicas ------------------------------------------------------------
 /*
- * Fvr_Inicializacao
- * Faz a inicialização do módulo Fvr.
+ *  Fvr_Inicializacao
+ *  Faz a inicialização do módulo Fvr
  */
 void Fvr_Inicializacao (void)
 {
-    FVRCONbits.FVRS = _FVR_TENSAO_DE_SAIDA;
+    VREFCON0bits.FVRS = FVR_TENSAO_DE_REFERENCIA;
+    VREFCON0bits.FVREN = Sim;
     
-    if (FVRCONbits.FVRS != 0)
-    {
-        FVRCONbits.FVREN = 1;
-        while (FVRCONbits.FVRST == 0) {};
-    }
+    while (!VREFCON0bits.FVRST){};
 }

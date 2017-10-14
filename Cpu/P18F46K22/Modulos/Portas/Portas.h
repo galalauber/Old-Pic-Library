@@ -141,7 +141,7 @@
 #define _PORTB_NIBBLE_L_DIGITAL             (ANSELB &= 0b11110000)
 #define _PORTB_0_DIGITAL                    (ANSELBbits.ANSB0 = _DIGITAL)
 #define _PORTB_1_DIGITAL                    (ANSELBbits.ANSB1 = _DIGITAL)
-#define _PORTB_2_DIGITAL                    (ANSELBbits.ANSB2 = _DIGITAL
+#define _PORTB_2_DIGITAL                    (ANSELBbits.ANSB2 = _DIGITAL)
 #define _PORTB_3_DIGITAL                    (ANSELBbits.ANSB3 = _DIGITAL)
 #define _PORTB_4_DIGITAL                    (ANSELBbits.ANSB4 = _DIGITAL)
 #define _PORTB_5_DIGITAL                    (ANSELBbits.ANSB5 = _DIGITAL)

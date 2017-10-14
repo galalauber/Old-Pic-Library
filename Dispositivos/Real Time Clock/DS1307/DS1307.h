@@ -23,8 +23,8 @@
 //Publicação das funções do módulo -------------------------------------------
 void DS1307_Inicializacao (void);
 void DS1307_PosicionaPonteiro(Uchar Endereco);
-void DS1307_LeDataHoras(_DataHoras *DataHoras);
-void DS1307_EscreveDataHoras(_DataHoras *DataHoras);
+void DS1307_LeDataHoras(ObjDataHoras *DataHoras);
+void DS1307_EscreveDataHoras(ObjDataHoras *DataHoras);
 
 
 #endif	/* DS1307_H */

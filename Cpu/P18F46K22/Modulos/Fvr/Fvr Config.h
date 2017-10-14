@@ -1,22 +1,24 @@
 /* 
- * Arquivo: Fvr Config.h
- * Autor:   JABNeto
- * Versao:  2016.05.19
+ *  Arquivo:    Fvr Config.h
+ *  uC:         PIC18F46K22
+ *  Autor:      JABNeto
+ *  Versão:     161011 
  */
 
 #ifndef FVR_CONFIG_H
 #define	FVR_CONFIG_H
 
-/*  1. Valor da tensão de saída
- *  Define o valor da tensão de saída do módulo.
+
+/*
+ *  1. Tensão de referencia do módulo
+ *  Define a tensão de referência que será entregue aos periféricos
  * 
- * Opções:
- * _FVR_0000: O valor da tensão de saída é 0V
- * _FVR_1024: O valor da tensão de saída é 1,024V
- * _FVR_2048: O valor da tensão de saída é 2,048V
- * _FVR_4096: O valor da tensão de saída é 4,096V
+ *  Opções:
+ *  Fvr_1024    A tensão de referência é 1,024V
+ *  Fvr_2048    A tensão de referência é 2,048V
+ *  Fvr_4096    A tensão de referência é 4,096V
  */
-#define _FVR_TENSAO_DE_SAIDA                        _FVR_4096
+#define FVR_TENSAO_DE_REFERENCIA                        Fvr_4096
 
 
 

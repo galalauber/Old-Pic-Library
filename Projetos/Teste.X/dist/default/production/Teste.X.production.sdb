@@ -1,0 +1,416 @@
+[p LITE_MODE AUTOSTATIC LFSROK EMI_WORD ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F46K22 ]
+[d frameptr 4065 ]
+"16 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\App.c
+[v _main main `(v  1 e 1 0 ]
+"29 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Base_1.c
+[v _Latch_Inicializacao Latch_Inicializacao `(v  1 e 1 0 ]
+"58
+[v _Latch_EscreveValor Latch_EscreveValor `(v  1 e 1 0 ]
+"76
+[v _Display_Inicializacao Display_Inicializacao `(v  1 e 1 0 ]
+"88
+[v _Display_LigaDigito Display_LigaDigito `(v  1 e 1 0 ]
+"102
+[v _Display_InicializaVarredura Display_InicializaVarredura `(v  1 e 1 0 ]
+"123
+[v _Display_ExecutaVarredura Display_ExecutaVarredura `(v  1 e 1 0 ]
+"154
+[v _Display_ExibeNumero Display_ExibeNumero `(v  1 e 1 0 ]
+"219
+[v _Teclado_Inicializacao Teclado_Inicializacao `(v  1 e 1 0 ]
+"492 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\doprnt.c
+[v _sprintf sprintf `(i  1 e 2 0 ]
+"62 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"54 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+"62 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\ftmul.c
+[v ___ftmul __ftmul `(f  1 e 3 0 ]
+"20 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\ftsub.c
+[v ___ftsub __ftsub `(f  1 e 3 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\isdigit.c
+[v _isdigit isdigit `(b  1 e 0 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\llmod.c
+[v ___llmod __llmod `(ul  1 e 4 0 ]
+"10 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 3 0 ]
+"245
+[v ___flsub __flsub `(d  1 e 3 0 ]
+"11 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 3 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\sprcmul.c
+[v ___flmul __flmul `(d  1 e 3 0 ]
+"15 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\Umul16.c
+[v ___wmul __wmul `(ui  1 e 2 0 ]
+"15 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"81 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Interrupcoes.c
+[v _Habilita_Interrupcoes Habilita_Interrupcoes `(v  1 e 1 0 ]
+"101
+[v _InterrupcoesDeAltaPrioridade InterrupcoesDeAltaPrioridade `IIH(v  1 e 1 0 ]
+"33 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Oscilador.c
+[v _Oscilador_Inicializacao Oscilador_Inicializacao `(v  1 e 1 0 ]
+"46 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Timer0.c
+[v _Timer0_CarregaValor Timer0_CarregaValor `(v  1 e 1 0 ]
+[v i2_Timer0_CarregaValor Timer0_CarregaValor `(v  1 e 1 0 ]
+"65
+[v _Timer0_Inicializacao Timer0_Inicializacao `(v  1 e 1 0 ]
+"89
+[v _Timer0_Interrupcao Timer0_Interrupcao `(v  1 e 1 0 ]
+"12 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Base_1.c
+[v _Converte_Bcd_7seg Converte_Bcd_7seg `C[10]uc  1 e 10 0 ]
+[s S157 . 7 `uc 1 Digito1 1 0 `uc 1 Digito2 1 1 `uc 1 Digito3 1 2 `uc 1 Digito4 1 3 `uc 1 Digito5 1 4 `uc 1 Digito6 1 5 `uc 1 Leds 1 6 ]
+"130 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Base_1.h
+[u S165 . 7 `[7]uc 1 Digitos 7 0 `S157 1 . 7 0 ]
+[s S168 . 1 `uc 1 OmiteZeros 1 0 :1:0 
+`uc 1 ExibePonto1 1 0 :1:1 
+`uc 1 ExibePonto2 1 0 :1:2 
+`uc 1 ExibePonto3 1 0 :1:3 
+`uc 1 ExibePonto4 1 0 :1:4 
+`uc 1 ExibePonto5 1 0 :1:5 
+`uc 1 ExibePonto6 1 0 :1:6 
+]
+[u S176 . 1 `uc 1 valor 1 0 `S168 1 . 1 0 ]
+[s S179 . 9 `uc 1 Sequencia 1 0 `S165 1 Buffer 7 1 `S176 1 Opcoes 1 8 ]
+[v _Varredura Varredura `S179  1 e 9 0 ]
+"50 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic18f46k22.h
+[v _ANSELA ANSELA `VEuc  1 e 1 @3896 ]
+"95
+[v _ANSELB ANSELB `VEuc  1 e 1 @3897 ]
+[s S263 . 1 `uc 1 ANSD0 1 0 :1:0 
+`uc 1 ANSD1 1 0 :1:1 
+`uc 1 ANSD2 1 0 :1:2 
+`uc 1 ANSD3 1 0 :1:3 
+`uc 1 ANSD4 1 0 :1:4 
+`uc 1 ANSD5 1 0 :1:5 
+`uc 1 ANSD6 1 0 :1:6 
+`uc 1 ANSD7 1 0 :1:7 
+]
+"213
+[u S272 . 1 `S263 1 . 1 0 ]
+[v _ANSELDbits ANSELDbits `VES272  1 e 1 @3899 ]
+"7670
+[v _LATB LATB `VEuc  1 e 1 @3978 ]
+[s S183 . 1 `uc 1 LATD0 1 0 :1:0 
+`uc 1 LATD1 1 0 :1:1 
+`uc 1 LATD2 1 0 :1:2 
+`uc 1 LATD3 1 0 :1:3 
+`uc 1 LATD4 1 0 :1:4 
+`uc 1 LATD5 1 0 :1:5 
+`uc 1 LATD6 1 0 :1:6 
+`uc 1 LATD7 1 0 :1:7 
+]
+"7921
+[s S192 . 1 `uc 1 LD0 1 0 :1:0 
+`uc 1 LD1 1 0 :1:1 
+`uc 1 LD2 1 0 :1:2 
+`uc 1 LD3 1 0 :1:3 
+`uc 1 LD4 1 0 :1:4 
+`uc 1 LD5 1 0 :1:5 
+`uc 1 LD6 1 0 :1:6 
+`uc 1 LD7 1 0 :1:7 
+]
+[u S201 . 1 `S183 1 . 1 0 `S192 1 . 1 0 ]
+[v _LATDbits LATDbits `VES201  1 e 1 @3980 ]
+"8280
+[v _TRISB TRISB `VEuc  1 e 1 @3987 ]
+[s S223 . 1 `uc 1 TRISD0 1 0 :1:0 
+`uc 1 TRISD1 1 0 :1:1 
+`uc 1 TRISD2 1 0 :1:2 
+`uc 1 TRISD3 1 0 :1:3 
+`uc 1 TRISD4 1 0 :1:4 
+`uc 1 TRISD5 1 0 :1:5 
+`uc 1 TRISD6 1 0 :1:6 
+`uc 1 TRISD7 1 0 :1:7 
+]
+"8756
+[s S232 . 1 `uc 1 RD0 1 0 :1:0 
+`uc 1 RD1 1 0 :1:1 
+`uc 1 RD2 1 0 :1:2 
+`uc 1 RD3 1 0 :1:3 
+`uc 1 RD4 1 0 :1:4 
+`uc 1 RD5 1 0 :1:5 
+`uc 1 RD6 1 0 :1:6 
+`uc 1 RD7 1 0 :1:7 
+]
+[u S241 . 1 `S223 1 . 1 0 `S232 1 . 1 0 ]
+[v _TRISDbits TRISDbits `VES241  1 e 1 @3989 ]
+[s S122 . 1 `uc 1 TUN 1 0 :6:0 
+`uc 1 PLLEN 1 0 :1:6 
+`uc 1 INTSRC 1 0 :1:7 
+]
+"9082
+[s S126 . 1 `uc 1 TUN0 1 0 :1:0 
+`uc 1 TUN1 1 0 :1:1 
+`uc 1 TUN2 1 0 :1:2 
+`uc 1 TUN3 1 0 :1:3 
+`uc 1 TUN4 1 0 :1:4 
+`uc 1 TUN5 1 0 :1:5 
+]
+[u S133 . 1 `S122 1 . 1 0 `S126 1 . 1 0 ]
+[v _OSCTUNEbits OSCTUNEbits `VES133  1 e 1 @3995 ]
+[s S90 . 1 `uc 1 SCS 1 0 :2:0 
+`uc 1 HFIOFS 1 0 :1:2 
+`uc 1 OSTS 1 0 :1:3 
+`uc 1 IRCF 1 0 :3:4 
+`uc 1 IDLEN 1 0 :1:7 
+]
+"16067
+[s S96 . 1 `uc 1 SCS0 1 0 :1:0 
+`uc 1 SCS1 1 0 :1:1 
+`uc 1 IOFS 1 0 :1:2 
+`uc 1 . 1 0 :1:3 
+`uc 1 IRCF0 1 0 :1:4 
+`uc 1 IRCF1 1 0 :1:5 
+`uc 1 IRCF2 1 0 :1:6 
+]
+[u S104 . 1 `S90 1 . 1 0 `S96 1 . 1 0 ]
+[v _OSCCONbits OSCCONbits `VES104  1 e 1 @4051 ]
+"16127
+[v _T0CON T0CON `VEuc  1 e 1 @4053 ]
+[s S532 . 1 `uc 1 T0PS 1 0 :3:0 
+`uc 1 PSA 1 0 :1:3 
+`uc 1 T0SE 1 0 :1:4 
+`uc 1 T0CS 1 0 :1:5 
+`uc 1 T08BIT 1 0 :1:6 
+`uc 1 TMR0ON 1 0 :1:7 
+]
+"16147
+[s S539 . 1 `uc 1 T0PS0 1 0 :1:0 
+`uc 1 T0PS1 1 0 :1:1 
+`uc 1 T0PS2 1 0 :1:2 
+]
+[u S543 . 1 `S532 1 . 1 0 `S539 1 . 1 0 ]
+[v _T0CONbits T0CONbits `VES543  1 e 1 @4053 ]
+"16204
+[v _TMR0L TMR0L `VEuc  1 e 1 @4054 ]
+"16224
+[v _TMR0H TMR0H `VEuc  1 e 1 @4055 ]
+[s S21 . 1 `uc 1 RBIF 1 0 :1:0 
+`uc 1 INT0IF 1 0 :1:1 
+`uc 1 TMR0IF 1 0 :1:2 
+`uc 1 RBIE 1 0 :1:3 
+`uc 1 INT0IE 1 0 :1:4 
+`uc 1 TMR0IE 1 0 :1:5 
+`uc 1 PEIE_GIEL 1 0 :1:6 
+`uc 1 GIE_GIEH 1 0 :1:7 
+]
+"16956
+[s S30 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 INT0F 1 0 :1:1 
+`uc 1 T0IF 1 0 :1:2 
+`uc 1 . 1 0 :1:3 
+`uc 1 INT0E 1 0 :1:4 
+`uc 1 T0IE 1 0 :1:5 
+`uc 1 PEIE 1 0 :1:6 
+`uc 1 GIE 1 0 :1:7 
+]
+[s S39 . 1 `uc 1 . 1 0 :6:0 
+`uc 1 GIEL 1 0 :1:6 
+`uc 1 GIEH 1 0 :1:7 
+]
+[u S43 . 1 `S21 1 . 1 0 `S30 1 . 1 0 `S39 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES43  1 e 1 @4082 ]
+"19170
+[v _T0IE T0IE `VEb  1 e 0 @32661 ]
+"19172
+[v _T0IF T0IF `VEb  1 e 0 @32658 ]
+"354 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\doprnt.c
+[v _dpowers dpowers `C[10]ul  1 s 40 dpowers ]
+[s S474 . 5 `uc 1 Temporizador10ms 1 0 `uc 1 Temporizador100ms 1 1 `uc 1 Temporizador250ms 1 2 `ui 1 Temporizador1s 2 3 ]
+"26 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Timer0.c
+[v _Ctrl_Timer0 Ctrl_Timer0 `S474  1 e 5 0 ]
+[s S426 . 1 `uc 1 Evento1 1 0 :1:0 
+`uc 1 Evento2 1 0 :1:1 
+`uc 1 Evento3 1 0 :1:2 
+`uc 1 Evento4 1 0 :1:3 
+`uc 1 Evento5 1 0 :1:4 
+`uc 1 Evento6 1 0 :1:5 
+`uc 1 Evento7 1 0 :1:6 
+`uc 1 Evento8 1 0 :1:7 
+]
+"37
+[u S435 . 1 `uc 1 valor 1 0 `S426 1 . 1 0 ]
+[s S438 . 1 `S435 1 . 1 0 ]
+[v _Eventos1s Eventos1s `S438  1 e 1 0 ]
+"16 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\App.c
+[v _main main `(v  1 e 1 0 ]
+{
+"17
+[v main@numero numero `ul  1 a 4 57 ]
+"38
+} 0
+"65 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Timer0.c
+[v _Timer0_Inicializacao Timer0_Inicializacao `(v  1 e 1 0 ]
+{
+"81
+} 0
+"46
+[v _Timer0_CarregaValor Timer0_CarregaValor `(v  1 e 1 0 ]
+{
+[s S493 . 4 `uc 1 byte0 1 0 `uc 1 byte1 1 1 `uc 1 byte2 1 2 `uc 1 byte3 1 3 ]
+"48
+[u S498 . 4 `ul 1 valor 4 0 `S493 1 bytes 4 0 ]
+[v Timer0_CarregaValor@ValorDeCarga ValorDeCarga `S498  1 a 4 18 ]
+"56
+} 0
+"219 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Base_1.c
+[v _Teclado_Inicializacao Teclado_Inicializacao `(v  1 e 1 0 ]
+{
+"222
+} 0
+"33 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Oscilador.c
+[v _Oscilador_Inicializacao Oscilador_Inicializacao `(v  1 e 1 0 ]
+{
+"83
+} 0
+"81 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Interrupcoes.c
+[v _Habilita_Interrupcoes Habilita_Interrupcoes `(v  1 e 1 0 ]
+{
+"85
+} 0
+"76 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Base_1.c
+[v _Display_Inicializacao Display_Inicializacao `(v  1 e 1 0 ]
+{
+[v Display_Inicializacao@Valor Valor `uc  1 a 1 wreg ]
+[v Display_Inicializacao@Valor Valor `uc  1 a 1 wreg ]
+[v Display_Inicializacao@Digito Digito `uc  1 p 1 21 ]
+"78
+[v Display_Inicializacao@Valor Valor `uc  1 a 1 22 ]
+"80
+} 0
+"102
+[v _Display_InicializaVarredura Display_InicializaVarredura `(v  1 e 1 0 ]
+{
+"116
+} 0
+"29
+[v _Latch_Inicializacao Latch_Inicializacao `(v  1 e 1 0 ]
+{
+[v Latch_Inicializacao@Valor Valor `uc  1 a 1 wreg ]
+[v Latch_Inicializacao@Valor Valor `uc  1 a 1 wreg ]
+"33
+[v Latch_Inicializacao@Valor Valor `uc  1 a 1 19 ]
+"52
+} 0
+"154
+[v _Display_ExibeNumero Display_ExibeNumero `(v  1 e 1 0 ]
+{
+"156
+[v Display_ExibeNumero@Contagem Contagem `[6]uc  1 a 6 12 ]
+"157
+[v Display_ExibeNumero@i i `uc  1 a 1 18 ]
+"154
+[v Display_ExibeNumero@Numero Numero `ul  1 p 4 52 ]
+"213
+} 0
+"492 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\doprnt.c
+[v _sprintf sprintf `(i  1 e 2 0 ]
+{
+"528
+[v sprintf@val val `ul  1 a 4 3 ]
+"501
+[v sprintf@width width `i  1 a 2 9 ]
+"494
+[v sprintf@ap ap `[1]*.39v  1 a 2 7 ]
+"504
+[v sprintf@prec prec `i  1 a 2 1 ]
+"499
+[v sprintf@c c `c  1 a 1 11 ]
+"508
+[v sprintf@flag flag `uc  1 a 1 0 ]
+"492
+[v sprintf@sp sp `*.39uc  1 p 2 40 ]
+[v sprintf@f f `*.25Cuc  1 p 2 42 ]
+"1541
+} 0
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\isdigit.c
+[v _isdigit isdigit `(b  1 e 0 0 ]
+{
+[v isdigit@c c `uc  1 a 1 wreg ]
+[v isdigit@c c `uc  1 a 1 wreg ]
+"14
+[v isdigit@c c `uc  1 a 1 20 ]
+"15
+} 0
+"15 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\Umul16.c
+[v ___wmul __wmul `(ui  1 e 2 0 ]
+{
+"17
+[v ___wmul@product product `ui  1 a 2 22 ]
+"15
+[v ___wmul@multiplier multiplier `ui  1 p 2 18 ]
+[v ___wmul@multiplicand multiplicand `ui  1 p 2 20 ]
+"53
+} 0
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\llmod.c
+[v ___llmod __llmod `(ul  1 e 4 0 ]
+{
+"11
+[v ___llmod@counter counter `uc  1 a 1 39 ]
+"8
+[v ___llmod@dividend dividend `ul  1 p 4 31 ]
+[v ___llmod@divisor divisor `ul  1 p 4 35 ]
+"26
+} 0
+"8 C:\Program Files (x86)\Microchip\xc8\v1.42\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
+{
+"11
+[v ___lldiv@quotient quotient `ul  1 a 4 26 ]
+"12
+[v ___lldiv@counter counter `uc  1 a 1 30 ]
+"8
+[v ___lldiv@dividend dividend `ul  1 p 4 18 ]
+[v ___lldiv@divisor divisor `ul  1 p 4 22 ]
+"31
+} 0
+"123 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Base_1.c
+[v _Display_ExecutaVarredura Display_ExecutaVarredura `(v  1 e 1 0 ]
+{
+"149
+} 0
+"88
+[v _Display_LigaDigito Display_LigaDigito `(v  1 e 1 0 ]
+{
+[v Display_LigaDigito@Valor Valor `uc  1 a 1 wreg ]
+[v Display_LigaDigito@Valor Valor `uc  1 a 1 wreg ]
+[v Display_LigaDigito@Digito Digito `uc  1 p 1 19 ]
+"90
+[v Display_LigaDigito@Valor Valor `uc  1 a 1 20 ]
+"94
+} 0
+"58
+[v _Latch_EscreveValor Latch_EscreveValor `(v  1 e 1 0 ]
+{
+[v Latch_EscreveValor@Valor Valor `uc  1 a 1 wreg ]
+[v Latch_EscreveValor@Valor Valor `uc  1 a 1 wreg ]
+"60
+[v Latch_EscreveValor@Valor Valor `uc  1 a 1 18 ]
+"71
+} 0
+"101 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Interrupcoes.c
+[v _InterrupcoesDeAltaPrioridade InterrupcoesDeAltaPrioridade `IIH(v  1 e 1 0 ]
+{
+"158
+} 0
+"89 C:\Users\Gleiton\Documents\FIEB\2017\Integral\MICO\MPLAB XC8\Projetos\Teste.X\Timer0.c
+[v _Timer0_Interrupcao Timer0_Interrupcao `(v  1 e 1 0 ]
+{
+"147
+} 0
+"46
+[v i2_Timer0_CarregaValor Timer0_CarregaValor `(v  1 e 1 0 ]
+{
+[s S493 . 4 `uc 1 byte0 1 0 `uc 1 byte1 1 1 `uc 1 byte2 1 2 `uc 1 byte3 1 3 ]
+[u S498 . 4 `ul 1 valor 4 0 `S493 1 bytes 4 0 ]
+[v i2Timer0_CarregaValor@ValorDeCarga Timer0_CarregaValor `S498  1 a 4 0 ]
+"56
+} 0

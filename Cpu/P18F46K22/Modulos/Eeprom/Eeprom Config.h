@@ -9,31 +9,29 @@
 
 
 //Definicoes das variáveis na EEPROM -----------------------------------------
-/* Parametros das medidas (13 bytes)
- * 
- * typedef struct
-{
-    float   FatorDeConversao;   (4)
-    float   Histerese;          (4) 
-    float   ValorMaximo;        (4)
-    float   ValorMinimo;        (4)
-   
-    struct
-    {
-        Uint AlarmeA:1;
-        Uint AlarmeB:1; 
-    }Habilitacao;               (1)
-}_MedidaParametros;
- */
-#define EEPROM_PARAMETROS_MEDIDAS            0
-#define EEPROM_PARAMETROS_MEDIDA_0          (0 * 13 + EEPROM_PARAMETROS_MEDIDAS)
-#define EEPROM_PARAMETROS_MEDIDA_1          (1 * 13 + EEPROM_PARAMETROS_MEDIDAS)
-
-
-
-
-
-
+//typedef struct
+//{
+//    float   FatorDeConversao; (4)
+//    float   Histerese;        (4)
+//    float   ValorMaximo;      (4)
+//    float   ValorMinimo;      (4)
+//   
+//    union
+//    {
+//        Uchar Valor;          (1) = 17
+//        
+//        struct
+//        {
+//            Uint AlarmeA:1;
+//            Uint AlarmeB:1; 
+//        };         
+//    }Habilitacao;
+//}_MedidaParametros;
+#define EEPROM_MEDIDAS_SIZE     17
+#define EEPROM_MEDIDAS          0
+#define EEPROM_MEDIDA_0         (0 * EEPROM_MEDIDAS_SIZE + EEPROM_MEDIDAS)
+#define EEPROM_MEDIDA_1         (1 * EEPROM_MEDIDAS_SIZE + EEPROM_MEDIDAS)
+#define EEPROM_MEDIDAS_FIM      (2 * EEPROM_MEDIDAS_SIZE + EEPROM_MEDIDAS)
 
 
 
@@ -41,7 +39,7 @@
 
 
 //Bytes para identificação de Inicializacao -----------------------------------
-#define E2P_BYTES_DE_INICIALIZACAO              (EEPROM_NUMERO_DE_BYTES - 5)
+#define E2P_BYTES_DE_INICIALIZACAO              (EEPROM_NUMERO_DE_BYTES - 4)
 
 
 #endif	/* EEPROM_CONFIG_H */

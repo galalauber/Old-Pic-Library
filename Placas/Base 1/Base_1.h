@@ -8,7 +8,7 @@
 #define	BASE_1_H
 
 #include <xc.h>
-#include "../../Geral/Definicoes_Gerais.h"
+#include "Definicoes Gerais.h"
 
 
 //Teclado --------------------------------------------

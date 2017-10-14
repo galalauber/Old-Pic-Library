@@ -6,7 +6,6 @@
 
 #include "Relogio.h"
 
-
 #if (RELOGIO_DISPOSITIVO == _RTCC )
 #include "RTCC.h"
 #elif (RELOGIO_DISPOSITIVO == _DS1307)
@@ -17,7 +16,8 @@
 
 
 //Alocação de memória para o módulo -------------------------------------------
-_Relogio     Relogio;
+ObjRelogio     Relogio;
+
 
 
 
@@ -42,22 +42,41 @@ void Relogio_Inicializacao (void)
     #elif (RELOGIO_DISPOSITIVO == _MCP7940)
         MCP7940_Inicializacao();
     #endif  
+    
+    Relogio.DataHoras.Horario.Horas = 0x00;
+    Relogio.DataHoras.Horario.Minutos = 0x00;    
+    Relogio.DataHoras.Horario.Segundos= 0x00;
+
+    Relogio.DataHoras.Data.Dia = 0x01;
+    Relogio.DataHoras.Data.Mes = 0x01;    
+    Relogio.DataHoras.Data.Ano = 0x16;
+    Relogio.DataHoras.Semana = _SEX;
+    
+    Relogio.Status.Stualizar = _NAO;
 }
 
 
 /*
- * Relogio_Atualizacao
+ * Relogio_Monitor
  * Faz a inicialização do módulo do relogio
  */
-void Relogio_Atualizacao (void)
+void Relogio_Monitor (void)
 {
-    #if (RELOGIO_DISPOSITIVO == _RTCC )
-        RTCC_LeDataHoras(&Relogio.DataHoras);
-    #elif (RELOGIO_DISPOSITIVO == _DS1307)
-        DS1307_LeDataHoras(&Relogio.DataHoras);
-    #elif (RELOGIO_DISPOSITIVO == _MCP7940)
-        MCP7940_LeDataHoras(&Relogio.DataHoras);
-    #endif    
+    if (Relogio.Status.Stualizar == _SIM)
+    {
+        Relogio.Status.Stualizar = _NAO;
+        
+        #if (RELOGIO_DISPOSITIVO == _RTCC )
+            RTCC_LeDataHoras(&Relogio.DataHoras);
+        #elif (RELOGIO_DISPOSITIVO == _DS1307)
+            DS1307_LeDataHoras(&Relogio.DataHoras);
+        #elif (RELOGIO_DISPOSITIVO == _MCP7940)
+            MCP7940_LeDataHoras(&Relogio.DataHoras);
+        #endif         
+    }
+    
+    
+    
 }
 
 /*
@@ -69,7 +88,7 @@ void Relogio_Atualizacao (void)
  * 1: Horario1 > Horario2
  * 2: Horario1 < Horario2
  */
-Uchar Relogio_ComparaHorario (_Horario *Horario1,_Horario *Horario2)
+Uchar Relogio_ComparaHorario (ObjHorario *Horario1,ObjHorario *Horario2)
 {
     Uchar Retorno = 0;
     
@@ -92,7 +111,7 @@ Uchar Relogio_ComparaHorario (_Horario *Horario1,_Horario *Horario2)
 
 
 /*
- * Relogio_ComparaData
+ * Relogio_ComparaDatas
  * Compara duas Datas e retorna Resposta.
  * 
  * Retorno:
@@ -100,7 +119,7 @@ Uchar Relogio_ComparaHorario (_Horario *Horario1,_Horario *Horario2)
  * 1: Data1 > Horario2
  * 2: Data2 < Data2
  */
-Uchar Relogio_ComparaDatas (_Data *Data1,_Data *Data2)
+Uchar Relogio_ComparaDatas (ObjData *Data1,ObjData *Data2)
 {
     Uchar Retorno = 0;
     

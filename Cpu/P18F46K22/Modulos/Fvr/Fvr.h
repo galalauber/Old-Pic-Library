@@ -1,28 +1,30 @@
 /* 
- * Arquivo: Fvr.h
- * Autor:   JABNeto
- * Versao:  2016.05.19
+ *  Arquivo:    Fvr.h
+ *  uC:         PIC18F46K22
+ *  Autor:      JABNeto
+ *  Versão:     161011 
  */
+
 
 #ifndef FVR_H
 #define	FVR_H
 
 #include <xc.h>
+#include "Definicoes Gerais.h"
 
-//Definições do módulo -------------------------------------------------------
 
-//Tensão de saída
-#define _FVR_0000           0
-#define _FVR_1024           1
-#define _FVR_2048           2
-#define _FVR_4096           3
+//Definições do módulo --------------------------------------------------------
+#define Fvr_1024            1
+#define Fvr_2048            2
+#define Fvr_4096            3
 
 
 #include "Fvr Config.h"
 
 
-//Publicação das funções do módulo --------------------------------------------
+//Funções públicas do módulo --------------------------------------------------
 void Fvr_Inicializacao (void);
+
 
 
 #endif	/* FVR_H */

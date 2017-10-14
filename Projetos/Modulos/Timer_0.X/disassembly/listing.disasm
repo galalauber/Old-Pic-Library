@@ -1,0 +1,65 @@
+Disassembly Listing for Timer_0
+Generated From:
+Z:/MPLAB XC8/Projetos/Modulos/Timer_0.X/dist/default/production/Timer_0.X.production.elf
+21/10/2016 16:51:35
+
+---  Z:/MPLAB XC8/Projetos/Modulos/Timer_0.X/app.c  -----------------------------------------------------
+1:             /*
+2:              * File:   app.c
+3:              * Author: jose_010573
+4:              *
+5:              * Created on 23 de Setembro de 2016, 17:18
+6:              */
+7:             
+8:             
+9:             #include <xc.h>
+10:            
+11:            #include "Timer0.h"
+12:            
+13:            #define PROG_START 0x300
+14:            
+15:            
+16:            
+17:            void main(void)
+18:            {
+19:                Timer0_Temporizador_Config();
+FFE0  ECF4     CALL 0xFFE8, 0
+FFE2  F07F     NOP
+20:            }
+FFE4  EF00     GOTO 0x0
+FFE6  F000     NOP
+---  Z:/MPLAB XC8/Projetos/Modulos/Timer_0.X/Timer0.c  --------------------------------------------------
+1:             /* 
+2:              * Arquivo: Timer0.c
+3:              * Autor:   JABNeto
+4:              * Versão:  2016.09.20
+5:              */
+6:             
+7:             #include <xc.h>
+8:             #include <math.h>
+9:             #include "Timer0.h"
+10:            
+11:            
+12:            
+13:            void Timer0_Temporizador_Config(void)
+14:            {
+15:                Uchar i, Fator;
+16:               
+17:                for (i = 0; i < 8; i++)
+FFE8  0E00     MOVLW 0x0
+FFEA  6E02     MOVWF i, ACCESS
+FFEC  0E07     MOVLW 0x7
+FFEE  6402     CPFSGT i, ACCESS
+FFF0  D001     BRA 0xFFF4
+FFF2  0012     RETURN 0
+FFFC  2A02     INCF i, F, ACCESS
+18:                {
+19:                    Fator = 2 * i;
+FFF4  5002     MOVF i, W, ACCESS
+FFF6  0D02     MULLW 0x2
+FFF8  CFF3     MOVFF PROD, __pcstackCOMRAM
+FFFA  F001     NOP
+FFFC  2A02     INCF i, F, ACCESS
+20:            
+21:                }
+22:            }

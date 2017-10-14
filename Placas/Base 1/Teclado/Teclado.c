@@ -7,10 +7,14 @@
 
 #include "Teclado.h"
 
+#if (TECLADO_FUNCOES_LCD == _SIM)
+#include "Display lcd alfa.h"
+#endif
+
 
 //Alocação de memória para o módulo -------------------------------------------
 #if (TECLADO_FUNCOES_ESTENDIDAS == _SIM)
-    _Ctrl_Teclado       Ctrl_Teclado;
+_Ctrl_Teclado       Ctrl_Teclado;
 #endif
 
 
@@ -60,10 +64,20 @@ void Teclado_Monitor(void)
                 else if (_S2 == _PRESSIONADA) Ctrl_Teclado.Eventos.S2 = _SIM;
                 else if (_S3 == _PRESSIONADA) Ctrl_Teclado.Eventos.S3 = _SIM;              
                 else if (_S4 == _PRESSIONADA) Ctrl_Teclado.Eventos.S4 = _SIM;                
-                else if (_S5 == _PRESSIONADA) Ctrl_Teclado.Eventos.S5 = _SIM;                
+                else if (_S5 == _PRESSIONADA) Ctrl_Teclado.Eventos.S5 = _SIM;
             }
         }
     }
+    
+    #if (TECLADO_FUNCOES_LCD == _SIM)
+        #if (_LCD_MODO_GREEN == _SIM)
+        if (Ctrl_Teclado.Eventos.Valor != 0)
+        {
+            CtrlDisplay.BackLight.Sinais.Restart = _SIM;                    
+        }
+        #endif
+    #endif    
+    
     #endif
 }
 
@@ -82,7 +96,7 @@ void Teclado_Monitor(void)
  */
 Uchar Tecla_Pressionada (Uchar Tecla)
 {
-    Uchar Retorno= _NAO;
+    Uchar Retorno = _NAO;
 
     switch (Tecla)
     {
@@ -125,6 +139,7 @@ Uchar Tecla_Pressionada (Uchar Tecla)
                 Retorno = _SIM;
             }
     }
+
 
     return Retorno;
 }

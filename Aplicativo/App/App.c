@@ -10,12 +10,17 @@
 #include "Timer 0.h"
 #include "Medidas.h"
 #include "Fvr.h"
+#include "Eeprom.h"
 #include "Interrupcoes.h"
 #include "Controle de Rotinas.h"
 #include "Display lcd alfa.h"
-#include "Teclado.h"
+#include "G1 Controle de Fluxo.h"
+#include "Controle do Forno.h"
+
 #include "App.h"
-#include "G1_ControleDeFluxo.h"
+
+
+
 
 
 
@@ -29,21 +34,26 @@ void App_InicializacaoDaCpu(void)
     Oscilador_Inicializacao();
     ADC1_Inicializacao();
     Fvr_Inicializacao();
-    Timer0_Inicializacao();    
+    Timer0_Inicializacao();
+    
+
+    if (EEPROM_DetectaInicializacao() == _NAO)
+    {
+        Medidas_ResetaParametros();
+        EEPROM_EscreveInicializacao();
+    }
 }
 
 
 /*
- * App_InicializacaoDo Aplicativo
- * Faz a inicialização do aplicativo. As rotinas de inicialização dos 
- * módulos devem ser chamadas aqui.
+ * App_InicializacaoDosModulos
+ * Faz a inicialização dos modulods do aplicativo.
  */
-void App_InicializacaoDoAplicativo(void)
+void App_InicializacaoDosModulos(void)
 {
-    Lcd_Inicializacao();
-    Teclado_Inicializacao();
     Medidas_Inicializacao();
     Rotinas_Inicializacao();    
+    Lcd_Inicializacao();
 }
 
 
@@ -54,61 +64,56 @@ void App_InicializacaoDoAplicativo(void)
 void App_Inicializacao(void)
 {
     App_InicializacaoDaCpu();
-    App_InicializacaoDoAplicativo();
-    CtrlRotinas.Controle.Cabecalho1 = _SIM;
+    App_InicializacaoDosModulos();
+    CtrlRotinas.Nivel[0].Controle.ExecutarCabecalho = _SIM;;
     
-    #ifdef INTERRUPCOES_H
     Habilita_Interrupcoes();
-    #endif
 }
+
+
+/*
+ * App_Tarefas
+ * Execução das tarefas que são independentes do fluxo do programa. Essas
+ * tarefas são constantemente executadas.
+ */
+void App_Tarefas(void)
+{
+
+
+}
+
 
 
 /*
  * App_Monitor
- * Executa as tarefas periodicas do sistema
- */
-void App_Monitor(void)
-{
-
-    
-    
-    
-    
-}
-
-
-/*
- * App_ControleDeFuxo
  * 
  */
-void App_ControleDeFuxo (void)
+void App_Monitor (void)
 {
     //Cabeçalho ---------------------------------------------------------------
-    if (Rotinas_ExecutarCabecalho(1) == _SIM)
+    if (Rotinas_ExecutarCabecalho(0) == _SIM)
     {
-        CtrlRotinas.Fluxo.Nivel1.Valor = 1;
-        CtrlRotinas.Fluxo.Nivel1.ValorMaximo = 3;
-        CtrlRotinas.Controle.Cabecalho2 = _SIM;
+        Rotinas_ConfiguraNivel (0,0,2);
     }
 
     
-    //Tarefas conatantes
-    App_Monitor();
-    
+    //Execução das tarefas periódicas do aplicativo
+    App_Tarefas();
+  
     
     //Controle de fluxo ------------------------------------------------------
-    switch (CtrlRotinas.Fluxo.Nivel1.Valor)
+    switch (CtrlRotinas.Nivel[0].Valor)
     {
-        case 1:
-            G1_ControleDeFuxo();
+        case 0:
+            G1_CtrlFluxo();
             break;
             
-//        case 2:
-//            G2_ControleDeFuxo();
+//        case 1:
+//            G2_CtrlFluxo();
 //            break;
 //            
-//        case 3:
-//            G3_ControleDeFuxo();
+//        case 2:
+//            G3_CtrlFluxo();
 //            break;           
             
     }

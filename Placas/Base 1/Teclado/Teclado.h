@@ -83,11 +83,11 @@ typedef struct
 }_Ctrl_Teclado;
 
 
-//Funções
+//Publicação das funções do módulo --------------------------------------------
 void Teclado_Monitor(void);
 Uchar Tecla_Pressionada (Uchar Tecla);
 
-//Variáveis
+//Publicação das variáveis do módulo ------------------------------------------
 extern _Ctrl_Teclado       Ctrl_Teclado;
 #endif
 

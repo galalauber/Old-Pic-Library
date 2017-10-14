@@ -22,104 +22,61 @@
 //Funções públicas -----------------------------------------------------------
 
 /*
- * EEPROM_EscreveByte
- * Escreve 1 byte na memória EEPROM interna do uC. O endereço é incrementado.
- * Endereco: local onde o Dado vai ser armazenado
- * Dado: valor que será armazenado
+ * EEPROM_EscreveEndereco
+ * Escreve o endereço fornecido nos registradores ADDRH:ADDR da eeprom.
+ * 
+ * Endereco: Endereço da memória
  */
-void EEPROM_EscreveByte(Uint Endereco, Uchar Dado)
+void EEPROM_EscreveEndereco (Uint Endereco)
 {
-    Uchar BackupGIE = 0;
     Uint16 _Endereco;
-            
-    if (INTCONbits.GIE == 1) BackupGIE = 1;
     
     _Endereco.valor = Endereco;
+    
     EEADR = _Endereco.bytes.byte0;
     EEADRH = _Endereco.bytes.byte1; 
-    EEDATA = Dado;
+}
+
+
+/*
+ * EEPROM_IncrementaEndereco
+ * Soma 1 ao endereço da memória (ADDRH:ADDR = ADDRH:ADDR + 1)
+ */
+void EEPROM_IncrementaEndereco(void)
+{
+    if(++EEADR == 0) EEADRH++;
+}
+
+
+/*
+ * EEPROM_EscreveByte
+ * Escreve 1 byte na memória EEPROM interna do uC cujo endereço está definido
+ * nos registradores ADDRH:ADDR.
+ * A rotina também incrementa o endereço  ADDRH:ADDR + 1 antes de ser
+ * enderrada.
+ * 
+ * Byte: Correspone ao valor que será armazenado no endereço ADDRH:ADDR
+ */
+void EEPROM_EscreveByte(Uchar Byte)
+{
+    EEDATA = Byte;
  
     EECON1bits.EEPGD = 0;
     EECON1bits.CFGS = 0;    
     EECON1bits.WREN = 1;
+    
     INTCONbits.GIE = 0;
     
     EECON2 = 0x55;
     EECON2 = 0xAA;    
     EECON1bits.WR = 1;
+    
     while (EECON1bits.WR == 1){};
     
     EECON1bits.WREN = 0;
+    INTCONbits.GIE = 1;
 
-    if (BackupGIE == 1) INTCONbits.GIE = 1;    
-}
-
-
-/*
- * EEPROM_EscreveUint16
- * Escreve um numero de 16 bits na memória EEPROM a partir do endereço
- * especificado
- * 
- * Endereço: Endereço da EEPROM para onde os dados serão transferidos
- * Dado:     Numero de 16 bits para ser armazenado
- */
-void EEPROM_EscreveUint (Uint Endereco, Uint Dado)
-{
-    Uint16 _Dado;
-    Uchar Bytes[2];
-    
-    _Dado.valor = Dado;
-    
-    Bytes[0] = _Dado.bytes.byte0;
-    Bytes[1] = _Dado.bytes.byte1;
-
-    EEPROM_EscreveBytes(Endereco, &Bytes[0],2);  
-}
-
-/*
- * EEPROM_EscreveUint
- * Escreve um numero de 32 bits na memória EEPROM a partir do endereço
- * especificado
- * 
- * Endereço: Endereço da EEPROM para onde os dados serão transferidos
- * Dado:     Numero de 32 bits para ser armazenado
- */
-void EEPROM_EscreveUlong (Uint Endereco, Ulong Dado)
-{
-    Uint32 _Dado;
-    Uchar Bytes[4];
-    
-    _Dado.valor = Dado;
-    
-    Bytes[0] = _Dado.bytes.byte0;
-    Bytes[1] = _Dado.bytes.byte1;
-    Bytes[2] = _Dado.bytes.byte2;
-    Bytes[3] = _Dado.bytes.byte3;
-
-    EEPROM_EscreveBytes(Endereco, &Bytes[0],4);    
-}
-
-/*
- * EEPROM_EscreveFloat32
- * Escreve um numero flutuante de 32 bits na memória EEPROM a partir do
- * endereço especificado
- * 
- * Endereço: Endereço da EEPROM para onde os dados serão transferidos
- * Dado:     Numero de 32 bits para ser armazenado
- */
-void EEPROM_EscreveFloat32 (Uint Endereco, float Dado)
-{
-    Float32 _Dado;
-    Uchar Bytes[4];
-    
-    _Dado.valor = Dado;
-    
-    Bytes[0] = _Dado.bytes.byte0;
-    Bytes[1] = _Dado.bytes.byte1;
-    Bytes[2] = _Dado.bytes.byte2;
-    Bytes[3] = _Dado.bytes.byte3;
-    
-    EEPROM_EscreveBytes(Endereco, &Bytes[0],4);
+    EEPROM_IncrementaEndereco();    
 }
 
 /*
@@ -132,98 +89,153 @@ void EEPROM_EscreveFloat32 (Uint Endereco, float Dado)
  */
 void EEPROM_EscreveBytes (Uint Endereco, Uchar *Origem, Uchar NBytes)
 {
+    EEPROM_EscreveEndereco(Endereco);
+    
     while (NBytes-- > 0)
     {
-        EEPROM_EscreveByte(Endereco++, *Origem++);
+        EEPROM_EscreveByte(*Origem++);
     }
 }
 
 
 /*
- * EEPROM_LeByte
- * Le um byte na EEPROM interna do uC.
- * Endereco: local onde o Dado está armazenado
+ * EEPROM_EscreveUchar
+ * Escreve um dados do tipo Uchar na memória
+ * 
+ * Endereço: Endereço da EEPROM onde o dado vai ser armazanado
+ * Dado:     Dado do tipo do tipo char que vai ser armazenado
  */
-Uchar EEPROM_LeByte (Uint Endereco)
+void EEPROM_EscreveUchar (Uint Endereco, Uchar Dado)
 {
-    Uint16 _Endereco;
-            
-    _Endereco.valor = Endereco;
-    EEADR = _Endereco.bytes.byte0;
-    EEADRH = _Endereco.bytes.byte1; 
+    EEPROM_EscreveEndereco(Endereco);
+    EEPROM_EscreveByte (Dado);
+}
 
+/*
+ * EEPROM_EscreveUint
+ * Escreve um dados do tipo Uint na memória
+ * 
+ * Endereço: Endereço da EEPROM onde o dado vai ser armazanado
+ * Dado:     Dado do tipo do tipo Uint que vai ser armazenado
+ */
+void EEPROM_EscreveUint (Uint Endereco, Uint Dado)
+{
+    Uint16 _Dado;
+    
+    _Dado.valor = Dado;
+    
+    EEPROM_EscreveEndereco(Endereco);
+    EEPROM_EscreveByte (_Dado.bytes.byte0);
+    EEPROM_EscreveByte (_Dado.bytes.byte1);    
+}
+
+/*
+ * EEPROM_EscreveUlong
+ * Escreve um dados do tipo Ulong na memória
+ * 
+ * Endereço: Endereço da EEPROM onde o dado vai ser armazanado
+ * Dado:     Dado do tipo do tipo Ulong que vai ser armazenado
+ */
+void EEPROM_EscreveUlong (Uint Endereco, Ulong Dado)
+{
+    Uint32 _Dado;
+    
+    _Dado.valor = Dado;
+    
+    EEPROM_EscreveEndereco(Endereco);
+    EEPROM_EscreveByte (_Dado.bytes.byte0);
+    EEPROM_EscreveByte (_Dado.bytes.byte1);
+    EEPROM_EscreveByte (_Dado.bytes.byte2);
+    EEPROM_EscreveByte (_Dado.bytes.byte3);   
+}
+
+/*
+ * EEPROM_EscreveFloat32
+ * Escreve um dados do tipo Float na memória
+ * 
+ * Endereço: Endereço da EEPROM onde o dado vai ser armazanado
+ * Dado:     Dado do tipo do tipo Float que vai ser armazenado
+ */
+void EEPROM_EscreveFloat32 (Uint Endereco, float Dado)
+{
+    Float32 _Dado;
+    
+    _Dado.valor = Dado;
+    
+    EEPROM_EscreveEndereco(Endereco);
+    EEPROM_EscreveByte (_Dado.bytes.byte0);
+    EEPROM_EscreveByte (_Dado.bytes.byte1);
+    EEPROM_EscreveByte (_Dado.bytes.byte2);
+    EEPROM_EscreveByte (_Dado.bytes.byte3);   
+}
+
+/*
+ * EEPROM_EscreveHorario
+ * Escreve um dados do tipo Horario na memória (seg,min,hor)
+ * 
+ * Endereço: Endereço da EEPROM onde o horário vai ser armazanado
+ * Horario:  Aponta para a estrutura Horario a ser armazenado
+ */
+void EEPROM_EscreveHorario (Uint Endereco, ObjHorario *Horario)
+{
+    EEPROM_EscreveEndereco(Endereco);
+    EEPROM_EscreveByte (Horario->Segundos);
+    EEPROM_EscreveByte (Horario->Minutos);
+    EEPROM_EscreveByte (Horario->Horas);
+}
+
+/*
+ * EEPROM_EscreveData
+ * Escreve um dados do tipo Data na memória (dia, mes, ano)
+ * 
+ * Endereço: Endereço da EEPROM onde a a data vai ser armazenada
+ * Data:     Aponta para a estrutura Data a ser armazenada
+ */
+void EEPROM_EscreveData (Uint Endereco, ObjData *Data)
+{
+    EEPROM_EscreveEndereco(Endereco);
+    EEPROM_EscreveByte (Data->Dia);
+    EEPROM_EscreveByte (Data->Mes);
+    EEPROM_EscreveByte (Data->Ano);
+}
+
+/*
+ * EEPROM_EscreveDataHoras
+ * Escreve um dados do tipo DataHoras na memória (Data completa)
+ * 
+ * Endereço:    Endereço da EEPROM onde a a data vai ser armazenada
+ * DataHoras:   Aponta para a estrutura DataHoras que vai ser armazenada
+ */
+void EEPROM_EscreveDataHoras (Uint Endereco, ObjDataHoras *DataHoras)
+{
+    EEPROM_EscreveHorario(Endereco,&DataHoras->Horario);
+    EEPROM_EscreveData(Endereco+3,&DataHoras->Data);    
+    EEPROM_EscreveUchar(Endereco+6,DataHoras->Semana);
+}
+
+
+/*
+ * EEPROM_LeByte
+ * Le 1 byte na memória EEPROM interna do uC cujo endereço está definido
+ * nos registradores ADDRH:ADDR.
+ * A rotina também incrementa o endereço  ADDRH:ADDR + 1 antes de ser
+ * enderrada.
+ * 
+ * Byte: Correspone ao valor que será armazenado no endereço ADDRH:ADDR
+ */
+Uchar EEPROM_LeByte(void)
+{
     EECON1bits.EEPGD = 0;
-    EECON1bits.CFGS = 0;     
+    EECON1bits.CFGS = 0;   
     EECON1bits.RD = 1;
     
+    EEPROM_IncrementaEndereco();
     return EEDATA;
 }
 
 /*
- * EEPROM_LeUint
- * Le um número de 16 bits na EEPROM interna do uC a partir do endereço
- * especificado
- * Endereco: local onde o Dado está armazenado
- */
-Uint EEPROM_LeUint (Uint Endereco)
-{
-    Uint16 _Dado;
-    Uchar Bytes[2];
-    
-    EEPROM_LeBytes(Endereco, &Bytes[0],2);
-     
-    _Dado.bytes.byte0 = Bytes[0];
-    _Dado.bytes.byte1 = Bytes[1];
-    
-    return _Dado.valor;
-}
-
-/*
- * EEPROM_LeUlong
- * Le um número de 32 bits na EEPROM interna do uC a partir do endereço
- * especificado
- * Endereco: local onde o Dado está armazenado
- */
-Ulong EEPROM_LeUlong (Uint Endereco)
-{
-    Uint32 _Dado;
-    Uchar Bytes[4];
-    
-    EEPROM_LeBytes(Endereco, &Bytes[0],4);
-     
-    _Dado.bytes.byte0 = Bytes[0];
-    _Dado.bytes.byte1 = Bytes[1];
-    _Dado.bytes.byte2 = Bytes[2];
-    _Dado.bytes.byte3 = Bytes[3];  
-    
-    return _Dado.valor;
-}
-
-/*
- * EEPROM_LeFloat32
- * Le um número de 32 bits na EEPROM interna do uC a partir do endereço
- * especificado
- * Endereco: local onde o Dado está armazenado
- */
-float EEPROM_LeFloat32 (Uint Endereco)
-{
-    Float32 _Dado;
-    Uchar Bytes[4];
-    
-    EEPROM_LeBytes(Endereco, &Bytes[0],4);
-
-    _Dado.bytes.byte0 = Bytes[0];
-    _Dado.bytes.byte1 = Bytes[1];
-    _Dado.bytes.byte2 = Bytes[2];
-    _Dado.bytes.byte3 = Bytes[3];         
-
-    return _Dado.valor;
-}
-
-
-/*
  * EEPROM_LeBytes
- * Le n bytes na EEPROM interna do uC a aprtir do endereço fornecido. Os 
+ * Le n bytes na EEPROM interna do uC a partir do endereço fornecido. Os 
  * dados lidos são sequencialmente transferidos para o local de destino
  * definido através do ponteiro *Destino.
  * 
@@ -233,10 +245,135 @@ float EEPROM_LeFloat32 (Uint Endereco)
  */
 void EEPROM_LeBytes (Uint Endereco, Uchar *Destino, Uchar NBytes)
 {
+    EEPROM_EscreveEndereco(Endereco);
+    
     while (NBytes-- > 0)
     {
-        *Destino++ = EEPROM_LeByte(Endereco++);
+        *Destino++ = EEPROM_LeByte();
     }
+}
+
+/*
+ * EEPROM_LeUchar
+ * Le dado do tipo Uchar na memória EEPROM interna do uC.
+ * 
+ * Endereço: Endereço da memória eeprom onde o dado está armazenado
+ */
+Uchar EEPROM_LeUchar (Uint Endereco)
+{
+    EEPROM_EscreveEndereco(Endereco);
+    
+    return EEPROM_LeByte();
+}
+            
+/*
+ * EEPROM_LeUint
+ * Le dado do tipo Uint na memória EEPROM interna do uC.
+ * 
+ * Endereço: Endereço da memória eeprom onde o dado está armazenado
+ */
+Uint EEPROM_LeUint (Uint Endereco)
+{
+    Uint16 Dado;
+    
+    EEPROM_EscreveEndereco(Endereco);
+    
+    Dado.bytes.byte0 = EEPROM_LeByte();
+    Dado.bytes.byte1 = EEPROM_LeByte();    
+    
+    return Dado.valor;
+}
+
+/*
+ * EEPROM_LeUlong
+ * Le dado do tipo Ulong na memória EEPROM interna do uC.
+ * 
+ * Endereço: Endereço da memória eeprom onde o dado está armazenado
+ */
+Ulong EEPROM_LeUlong (Uint Endereco)
+{
+    Uint32 Dado;
+    
+    EEPROM_EscreveEndereco(Endereco);
+    
+    Dado.bytes.byte0 = EEPROM_LeByte();
+    Dado.bytes.byte1 = EEPROM_LeByte();
+    Dado.bytes.byte2 = EEPROM_LeByte();
+    Dado.bytes.byte3 = EEPROM_LeByte();      
+    
+    return Dado.valor;
+}
+
+/*
+ * EEPROM_LeFloat32
+ * Le dado do tipo float na memória EEPROM interna do uC.
+ * 
+ * Endereço: Endereço da memória eeprom onde o dado está armazenado
+ */
+float EEPROM_LeFloat32 (Uint Endereco)
+{
+    Float32 Dado;
+    
+    EEPROM_EscreveEndereco(Endereco);
+    
+    Dado.bytes.byte0 = EEPROM_LeByte();
+    Dado.bytes.byte1 = EEPROM_LeByte();
+    Dado.bytes.byte2 = EEPROM_LeByte();
+    Dado.bytes.byte3 = EEPROM_LeByte();      
+    
+    return Dado.valor;
+}
+
+/*
+ * EEPROM_LeHorario
+ * Le um dados do tipo Horario na memória (seg,min,hor)
+ * 
+ * Endereço: Endereço da EEPROM onde o horário a ser lido está armazenado
+ * Horaio:   Aponta para a estrutura do tipo Horario para onde os dados lidos
+ *           serão transferidos.
+ */
+void EEPROM_LeHorario (Uint Endereco, ObjHorario *Horario)
+{
+    EEPROM_EscreveEndereco(Endereco);
+    Horario->Segundos = EEPROM_LeByte();
+    Horario->Minutos = EEPROM_LeByte();
+    Horario->Horas = EEPROM_LeByte();
+}
+
+/*
+ * EEPROM_LeData
+ * Le um dados do tipo Data na memória (dia,mes,ano)
+ * 
+ * Endereço: Endereço da EEPROM onde a data a ser lida está armazenada
+ * Data:     Aponta para a estrutura do tipo Data para onde os dados lidos
+ *           serão transferidos.
+ */
+void EEPROM_LeData (Uint Endereco, ObjData *Data)
+{
+    EEPROM_EscreveEndereco(Endereco);
+    Data->Dia = EEPROM_LeByte();
+    Data->Mes = EEPROM_LeByte();
+    Data->Ano = EEPROM_LeByte();
+}
+
+/*
+ * EEPROM_LeDataHoras
+ * Le um dados do tipo DataHora na memória (Data Completa)
+ * 
+ * Endereço: Endereço da EEPROM onde a DataHoras a ser lida está armazenada
+ * Data:     Aponta para a estrutura DataHoras para onde os dados lidos serão
+ *           transferidos.
+ */
+void EEPROM_LeDataHoras (Uint Endereco, ObjDataHoras *DataHoras)
+{
+    EEPROM_EscreveEndereco(Endereco);
+    DataHoras->Horario.Segundos = EEPROM_LeByte();
+    DataHoras->Horario.Minutos = EEPROM_LeByte();    
+    DataHoras->Horario.Horas = EEPROM_LeByte();
+    DataHoras->Data.Dia = EEPROM_LeByte();
+    DataHoras->Data.Mes = EEPROM_LeByte();    
+    DataHoras->Data.Ano = EEPROM_LeByte();    
+    DataHoras->Semana = EEPROM_LeByte();
 }
 
 /*
@@ -252,18 +389,18 @@ Uchar EEPROM_DetectaInicializacao (void)
     
     EEPROM_LeBytes(E2P_BYTES_DE_INICIALIZACAO,&Bytes[0],4);
     
-    if ((Bytes[0] == EEPROM_INICIALIZACAO_BYTE1)&&
-        (Bytes[1] == EEPROM_INICIALIZACAO_BYTE2)&& 
-        (Bytes[2] == EEPROM_INICIALIZACAO_BYTE3)&&   
-        (Bytes[3] == EEPROM_INICIALIZACAO_BYTE4)) return 1;
-    else return 0;
+    if ((Bytes[0] == 0xFF)&&
+        (Bytes[1] == 0xFF)&& 
+        (Bytes[2] == 0xFF)&&   
+        (Bytes[3] == 0xFF)) return 0;
+    else return 1;
 }
      
 /*
- * EEPROM_InicializacaoOk
+ * EEPROM_EscreveInicializacao
  * Escreve os bytes de Inicialização na memória EEPROM
  */
-void EEPROM_InicializacaoOk (void)
+void EEPROM_EscreveInicializacao (void)
 {
     Uchar  Bytes[4];
     
@@ -271,6 +408,22 @@ void EEPROM_InicializacaoOk (void)
     Bytes[1] = EEPROM_INICIALIZACAO_BYTE2;
     Bytes[2] = EEPROM_INICIALIZACAO_BYTE3;
     Bytes[3] = EEPROM_INICIALIZACAO_BYTE4;    
+    
+    EEPROM_EscreveBytes(E2P_BYTES_DE_INICIALIZACAO,&Bytes[0],4);
+}
+
+/*
+ * EEPROM_ResetaInicializacao
+ * Reseta a inicializacao da E2prom
+ */
+void EEPROM_ResetaInicializacao (void)
+{
+    Uchar  Bytes[4];
+    
+    Bytes[0] = 0xFF;
+    Bytes[1] = 0xFF;
+    Bytes[2] = 0xFF;
+    Bytes[3] = 0xFF;    
     
     EEPROM_EscreveBytes(E2P_BYTES_DE_INICIALIZACAO,&Bytes[0],4);
 }

@@ -7,7 +7,7 @@
 #include "Oscilador.h"
 
 
-#if (_SISTEMA_USA_OSCILADOR_PRIMARIO == Sim)
+#if (_SISTEMA_USA_OSCILADOR_PRIMARIO == _SIM)
 #pragma config FOSC = _OSC_PRIMARIO_TIPO
 #else
 #pragma config FOSC = _OSC_INTERNO_TIPO
@@ -83,7 +83,7 @@ void Oscilador_Inicializacao (void)
     OSCCON2bits.PRISD = 1; 
 #endif  
     
-#if (_OSC_PRIMARIO_PLL_ATIVADO == Sim)
+#if (_OSC_PRIMARIO_PLL_ATIVADO == _SIM)
     OSCTUNEbits.PLLEN= 1; 
 #else
     OSCTUNEbits.PLLEN= 0; 

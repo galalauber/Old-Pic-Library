@@ -17,7 +17,7 @@ typedef struct
     Uint    Buffer[MEDIDAS_NUMERO_DE_AMOSTRAS];    
     Uchar   NumeroDaAmostra;
     Uchar   IdMedida; 
-}_Aquisicao;
+}ObjAquisicao;
 
 
 typedef struct
@@ -37,15 +37,15 @@ typedef struct
             Uint AlarmeB:1; 
         };         
     }Habilitacao;
-}_MedidaParametros;
+}ObjMedidaParametros;
 
 
 typedef struct
 {
-    _MedidaParametros   Parametros;      
-    unsigned char       Canal;
-    float               MediaAmostras;
-    float               ValorDecimal;
+    ObjMedidaParametros     Parametros;      
+    Uchar                   Canal;
+    float                   MediaAmostras;
+    float                   ValorDecimal;
 
     union
     {
@@ -57,21 +57,8 @@ typedef struct
             Uint AlarmeB:1; 
         };         
     }Eventos;   
-}_Medida;
+}ObjMedida;
 
-
-typedef struct
-{
-    Uint Valor;
-    
-    struct
-    {
-        Uint TensaoDeEntradaAlta:1;
-        Uint TensaoDeEntradaBaixa:1;        
-        Uint TensaoDeBateriaAlta:1;
-        Uint TensaoDeBateriaBaixa:1;          
-    };
-}_Alarmes;
 
 
 //Processamento das definicoes do módulo --------------------------------------
@@ -81,13 +68,15 @@ typedef struct
 //Publicação das funções do módulo --------------------------------------------
 void Medidas_Inicializacao (void);
 void Medidas_Monitor (void);
-void Medidas_CarregaParametros (Uchar IdMedida);
-void Medidas_EscreveParametros (Uchar IdMedida);
+void Medidas_RecuperaParametros (Uchar IdMedida);
+void Medidas_SalvaParametros (Uchar IdMedida);
+void Medidas_ResetaParametros (void);
 void Medida_Calibracao (Uchar IdMedida,float NovoValor);
-
 Uint Medida_CalculaEnderecoE2prom (Uchar IdMedida);
-//Publicação das variáveis do módulo ------------------------------------------
 
+
+//Publicação das variáveis do módulo ------------------------------------------
+extern ObjMedida   Medidas[];
 
 #endif	/* MEDIDAS_H */
 

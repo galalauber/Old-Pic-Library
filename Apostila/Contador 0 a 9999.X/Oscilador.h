@@ -43,7 +43,7 @@
 #define _LF_31KHz                               31250
 
 
-#include "../../Geral/Definicoes_Gerais.h"
+#include "Definicoes Gerais.h"
 #include "Oscilador_Config.h"
 
 

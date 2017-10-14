@@ -160,7 +160,7 @@ void Display_ExibeNumero (Ulong Numero)
     
     for (i = 0; i < 6;i++)
     {
-        if (Varredura.Opcoes.OmiteZeros == Sim)
+        if (Varredura.Opcoes.OmiteZeros == _SIM)
         {
             if (Contagem[i]== ' ')
             {
@@ -186,27 +186,27 @@ void Display_ExibeNumero (Ulong Numero)
         }
     }
     
-    if (Varredura.Opcoes.ExibePonto1 == Sim)
+    if (Varredura.Opcoes.ExibePonto1 == _SIM)
     {
         Varredura.Buffer.Digito1 |= 0x80;
     }
-    if (Varredura.Opcoes.ExibePonto2 == Sim)
+    if (Varredura.Opcoes.ExibePonto2 == _SIM)
     {
         Varredura.Buffer.Digito2 |= 0x80;
     }
-    if (Varredura.Opcoes.ExibePonto3 == Sim)
+    if (Varredura.Opcoes.ExibePonto3 == _SIM)
     {
         Varredura.Buffer.Digito3 |= 0x80;
     }
-    if (Varredura.Opcoes.ExibePonto4 == Sim)
+    if (Varredura.Opcoes.ExibePonto4 == _SIM)
     {
         Varredura.Buffer.Digito4 |= 0x80;
     }    
-    if (Varredura.Opcoes.ExibePonto5 == Sim)
+    if (Varredura.Opcoes.ExibePonto5 == _SIM)
     {
         Varredura.Buffer.Digito5 |= 0x80;
     }
-    if (Varredura.Opcoes.ExibePonto6 == Sim)
+    if (Varredura.Opcoes.ExibePonto6 == _SIM)
     {
         Varredura.Buffer.Digito6 |= 0x80;
     }    

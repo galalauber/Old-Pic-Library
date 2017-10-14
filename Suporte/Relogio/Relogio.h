@@ -10,18 +10,18 @@
 #include "Definicoes Gerais.h"
 
 //Definições do módulo -------------------------------------------------------
-
-//Tipos de Alarmes --------------
-#define _DIARIO                 0
-#define _SEMANAL                1 
-#define _MENSAL                 2                         
-#define _ANUAL                  3 
-
 //RTCCS
 #define _SOFTWARE               0
 #define _RTCC                   1
 #define _DS1307                 2
 #define _MCP7940                3
+
+//Tipos de Alarmes --------------
+#define _DESLIGADO              0
+#define _DIARIO                 1
+#define _SEMANAL                2 
+#define _MENSAL                 3                         
+#define _ANUAL                  4 
 
 //Dias da Semana
 #define _DOM                    1
@@ -40,7 +40,7 @@ typedef struct
     Uchar Segundos;
     Uchar Minutos;
     Uchar Horas;
-}_Horario;
+}ObjHorario;
 
 
 typedef struct
@@ -48,32 +48,43 @@ typedef struct
     Uchar Dia;
     Uchar Mes;
     Uchar Ano;
-}_Data;
-
-
-typedef struct
-{
-    _Horario  Horario;
-    _Data     Data;
-    Uchar     Semana;   
-}_DataHoras;
+}ObjData;
 
 typedef struct
 {
-    _DataHoras  DataHoras;
+    ObjHorario  Horario;
+    ObjData     Data;
+    Uchar       Semana;   
+}ObjDataHoras;
 
+typedef struct
+{
+    ObjDataHoras    DataHoras;
+    Uchar           Modo;
+    
     struct
     {
-        Uint    Ativado:1;        
+        Uint    Ligado:1;        
     }Sinais;
-}_Alarmes;
+}ObjAlarme;
 
 
 typedef struct     
 {
-    _DataHoras  DataHoras;
-    _Alarmes    Alarme[RELOGIO_EVENTOS_DE_ALARMES];
-}_Relogio;
+    ObjDataHoras  DataHoras;
+    ObjAlarme     Alarmes[RELOGIO_EVENTOS_DE_ALARMES];
+    
+    union
+    {
+        Uchar Valor;
+        
+        struct
+        {
+            Uint Stualizar:1;
+            
+        }Status;
+    };
+}ObjRelogio;
 
 
 
@@ -85,14 +96,14 @@ typedef struct
 
 //publicação das funções do módulo --------------------------------------------
 void Relogio_Inicializacao (void);
-void Relogio_Atualizacao (void);
-Uchar Relogio_ComparaHorario (_Horario *Horario1,_Horario *Horario2);
-Uchar Relogio_ComparaDatas (_Data *Data1,_Data *Data2);
+void Relogio_Monitor (void);
+Uchar Relogio_ComparaHorario (ObjHorario *Horario1,ObjHorario *Horario2);
+Uchar Relogio_ComparaDatas (ObjData *Data1,ObjData *Data2);
 
 
 
 //Publicação das variáveis do módulo ------------------------------------------
-extern _Relogio     Relogio;
+extern ObjRelogio     Relogio;
 
 
 #endif	/* RELOGIO_H */

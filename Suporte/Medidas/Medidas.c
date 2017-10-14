@@ -11,9 +11,9 @@
 
 
 //Alocação de memória para o módulo--------------------------------------------
-_Aquisicao              Aquisicao;
-_Medida                 Medidas[MEDIDAS_NUMERO_DE_GRANDEZAS];
-_Alarmes                SinaisDeAlarmes, HabilitacaoDeAlarmes;
+ObjAquisicao              Aquisicao;
+ObjMedida                 Medidas[MEDIDAS_NUMERO_DE_GRANDEZAS];
+
 
 
 
@@ -25,7 +25,7 @@ _Alarmes                SinaisDeAlarmes, HabilitacaoDeAlarmes;
  */
 void Medida_ZeraMedidas(void)
 {
-    _Medida *Pnt;
+    ObjMedida *Pnt;
     unsigned char i;
     
     Pnt = &Medidas[0];
@@ -64,7 +64,7 @@ void Medida_ZeraBuffer (void)
  */
 Uint Medida_CalculaEnderecoE2prom (Uchar IdMedida)
 {
-    return (EEPROM_PARAMETROS_MEDIDA_0 + (IdMedida * sizeof (_MedidaParametros)));
+    return ((Uint)EEPROM_MEDIDAS + (IdMedida * sizeof (ObjMedidaParametros)));
 }
 
 
@@ -85,7 +85,7 @@ Uint Medida_CalculaEnderecoE2prom (Uchar IdMedida)
 void Medida_Calibracao (Uchar IdMedida,float NovoValor)
 {
     Uint Endereco;
-    _Medida *Pnt;
+    ObjMedida *Pnt;
     
     Endereco = Medida_CalculaEnderecoE2prom(IdMedida);
     Pnt = &Medidas[IdMedida];
@@ -95,31 +95,32 @@ void Medida_Calibracao (Uchar IdMedida,float NovoValor)
         Pnt->Parametros.FatorDeConversao = (NovoValor / Pnt->MediaAmostras);
     }
     
-    Medidas_EscreveParametros(IdMedida);
+    Medidas_SalvaParametros(IdMedida);
 }
 
 
 /*
- * Medida_Conversao
- * Calcula o valor médio do buffer de aquisição e calcula o valor da medida
- * utilizando o fator de conversão da medida fornecida.
- * 
- * IdMedida: Identificação da medida
+ * Medida_Monitor
+ * Faz a aquisição dos valores das grandezas, calculam o valor médio e efetua
+ * a conversão do valor decomal utilizando o fator de conversão.
+ * Essa rotina faz também a detecçao dos alarmes alto e baixo se estiverem
+ * habilitados.
  */
-void Medida_Conversao (Uchar IdMedida)
+void Medidas_Monitor (void)
 {
-    _Medida *Pnt;
+    ObjMedida *Pnt;
     
-    Pnt = &Medidas[IdMedida];
+    Pnt = &Medidas[Aquisicao.IdMedida];
     
-    Aquisicao.Buffer[Aquisicao.NumeroDaAmostra] = ADC1_ConverteCanal(Pnt->Canal);
+    Aquisicao.Buffer[Aquisicao.NumeroDaAmostra++] = ADC1_ConverteCanal(Pnt->Canal);
     
-    if (++Aquisicao.NumeroDaAmostra == MEDIDAS_NUMERO_DE_AMOSTRAS)
+    if (Aquisicao.NumeroDaAmostra == MEDIDAS_NUMERO_DE_AMOSTRAS)
     {
         unsigned char i;
         unsigned long Soma = 0;        
         
         Aquisicao.NumeroDaAmostra = 0;
+        
         if(++Aquisicao.IdMedida >= MEDIDAS_NUMERO_DE_GRANDEZAS) Aquisicao.IdMedida = 0;
     
         //Calculo do valor da medida
@@ -128,7 +129,7 @@ void Medida_Conversao (Uchar IdMedida)
             Soma += Aquisicao.Buffer[i];        
         }
         
-        Pnt->MediaAmostras = (float)(Soma / MEDIDAS_NUMERO_DE_AMOSTRAS);
+        Pnt->MediaAmostras = (float)Soma / (Uchar)MEDIDAS_NUMERO_DE_AMOSTRAS;
             
         Pnt->ValorDecimal = Pnt->MediaAmostras * Pnt->Parametros.FatorDeConversao;        
     
@@ -158,7 +159,7 @@ void Medida_Conversao (Uchar IdMedida)
         {
             if (Pnt->Eventos.AlarmeB == 0)
             {
-                if (Pnt->ValorDecimal <= Pnt->Parametros.ValorMaximo)
+                if (Pnt->ValorDecimal <= Pnt->Parametros.ValorMinimo)
                 {
                     Pnt->Eventos.AlarmeB = 1;
                 }
@@ -176,37 +177,37 @@ void Medida_Conversao (Uchar IdMedida)
 }
 
 /*
- * Medidas_CarregaParametros
- * Carrega os parametros de configuração de uma medida armazenados na EEPROM
+ * Medidas_RecuperaParametros
+ * recupera os parametros de uma grandeza armazenados na EEPROM
  * 
  * IdMedida: Identificação da medida
  */
-void Medidas_CarregaParametros (Uchar IdMedida)
+void Medidas_RecuperaParametros (Uchar IdMedida)
 {
     Uint Endereco;
-    _Medida *Pnt;
+    ObjMedida *Pnt;
     
     Endereco = Medida_CalculaEnderecoE2prom(IdMedida);
+    
     Pnt = &Medidas[IdMedida];
     
     Pnt->Parametros.FatorDeConversao = EEPROM_LeFloat32(Endereco);
     Pnt->Parametros.Histerese = EEPROM_LeFloat32(Endereco+4);
     Pnt->Parametros.ValorMaximo = EEPROM_LeFloat32(Endereco+8);
     Pnt->Parametros.ValorMinimo = EEPROM_LeFloat32(Endereco+12);
-    Pnt->Parametros.Habilitacao.Valor = EEPROM_LeByte(Endereco+16);
+    Pnt->Parametros.Habilitacao.Valor = EEPROM_LeUchar(Endereco+16);
 }
 
-
 /*
- * Medidas_EscreveParametros
+ * Medidas_SalvaParametros
  * Armazena os parametros de configuração de uma medida na EEPROM
  * 
  * IdMedida: Identificação da medida
  */
-void Medidas_EscreveParametros (Uchar IdMedida)
+void Medidas_SalvaParametros (Uchar IdMedida)
 {
     Uint Endereco;
-    _Medida *Pnt;
+    ObjMedida *Pnt;
     
     Endereco = Medida_CalculaEnderecoE2prom(IdMedida);
     Pnt = &Medidas[IdMedida];
@@ -215,7 +216,7 @@ void Medidas_EscreveParametros (Uchar IdMedida)
     EEPROM_EscreveFloat32(Endereco+4,Pnt->Parametros.Histerese);
     EEPROM_EscreveFloat32(Endereco+8,Pnt->Parametros.ValorMaximo);
     EEPROM_EscreveFloat32(Endereco+12,Pnt->Parametros.ValorMinimo);
-    EEPROM_EscreveByte(Endereco+16,Pnt->Parametros.Habilitacao.Valor);
+    EEPROM_EscreveUchar(Endereco+16,Pnt->Parametros.Habilitacao.Valor);
 }
 
 
@@ -232,7 +233,7 @@ void Medidas_Inicializacao (void)
     for (i = 0; i < MEDIDAS_NUMERO_DE_GRANDEZAS; i++)
     {
         Endereco = Medida_CalculaEnderecoE2prom(i);
-        Medidas_CarregaParametros (i);         
+        Medidas_RecuperaParametros (i);         
     }
     
     Medida_ZeraBuffer();
@@ -240,16 +241,23 @@ void Medidas_Inicializacao (void)
 
     Aquisicao.IdMedida = 0;
     Aquisicao.NumeroDaAmostra = 0;  
-    SinaisDeAlarmes.Valor = 0;
+
 }
 
 /*
- * Medidas_Monitor
- * Executa o processo de aquisição, calculos e detecção de alarmes
+ * Medidas_ResetaParametros
+ * Reseta as configurações das medidas armazenadas na E2prom
  */
-void Medidas_Monitor (void)
+void Medidas_ResetaParametros (void)
 {
-    Medida_Conversao(Aquisicao.IdMedida);    
+    Uchar i;
+    
+    Medida_ZeraMedidas();
+    
+    for (i = 0; i < MEDIDAS_NUMERO_DE_GRANDEZAS; i++)
+    {
+        Medidas_SalvaParametros(i);        
+    }
 }
 
 

@@ -1,0 +1,511 @@
+
+
+Microchip Technology PIC18 LITE Macro Assembler V1.36 build -262312587 
+                                                                                               Tue Aug 23 22:18:34 2016
+
+Microchip Technology Omniscient Code Generator v1.36 (Free mode) build 201601150325
+     1                           	processor	18F46K22
+     2                           	fnconf	rparam,??,?,0
+     3                           	opt	pw 120
+     4                           	opt	lm
+     5                           	psect	cinit,global,reloc=2,class=CODE,delta=1
+     6                           	psect	cstackCOMRAM,global,class=COMRAM,space=1,delta=1
+     7                           	psect	text0,global,reloc=2,class=CODE,delta=1
+     8                           	psect	intcode,global,reloc=2,class=CODE,delta=1
+     9                           	psect	intsave_regs,global,class=BIGRAM,space=1,delta=1
+    10                           	psect	rparam,global,class=COMRAM,space=1,delta=1
+    11                           	psect	temp,global,ovrld,common,class=COMRAM,space=1,delta=1
+    12  0000                     _ANSELB	set	3897
+    13  0000                     _LATB	set	3978
+    14  0000                     _TRISB	set	3987
+    15                           
+    16                           ; #config settings
+    17                           
+    18                           	psect	cinit
+    19  000092                     __pcinit:
+    20                           	opt stack 0
+    21  000092                     start_initialization:
+    22                           	opt stack 0
+    23  000092                     __initialization:
+    24                           	opt stack 0
+    25  000092                     end_of_initialization:
+    26                           	opt stack 0
+    27  000092                     __end_of__initialization:
+    28                           	opt stack 0
+    29  000092  900F               	bcf	int$flags,0,c	;clear compiler interrupt flag (level 1)
+    30  000094  920F               	bcf	int$flags,1,c	;clear compiler interrupt flag (level 2)
+    31  000096  0100               	movlb	0
+    32  000098  EF41  F000         	goto	_main	;jump to C main() function
+    33                           
+    34                           	psect	cstackCOMRAM
+    35  000001                     __pcstackCOMRAM:
+    36                           	opt stack 0
+    37  000001                     ??_Interrupt_Service:
+    38                           
+    39                           ; 1 bytes @ 0x0
+    40  000001                     	ds	14
+    41  00000F                     
+    42                           ; 1 bytes @ 0xE
+    43 ;;
+    44 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+    45 ;;
+    46 ;; *************** function _main *****************
+    47 ;; Defined at:
+    48 ;;		line 10 in file "App.c"
+    49 ;; Parameters:    Size  Location     Type
+    50 ;;		None
+    51 ;; Auto vars:     Size  Location     Type
+    52 ;;		None
+    53 ;; Return value:  Size  Location     Type
+    54 ;;                  1    wreg      void 
+    55 ;; Registers used:
+    56 ;;		wreg, status,2
+    57 ;; Tracked objects:
+    58 ;;		On entry : 0/0
+    59 ;;		On exit  : 0/0
+    60 ;;		Unchanged: 0/0
+    61 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+    62 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+    63 ;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+    64 ;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+    65 ;;      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+    66 ;;Total ram usage:        0 bytes
+    67 ;; Hardware stack levels required when called:    1
+    68 ;; This function calls:
+    69 ;;		Nothing
+    70 ;; This function is called by:
+    71 ;;		Startup code after reset
+    72 ;; This function uses a non-reentrant model
+    73 ;;
+    74                           
+    75                           	psect	text0
+    76  000082                     __ptext0:
+    77                           	opt stack 0
+    78  000082                     _main:
+    79                           	opt stack 30
+    80                           
+    81                           ;App.c: 12: LATB = 0b10101010;
+    82                           
+    83                           ;incstack = 0
+    84  000082  0EAA               	movlw	170
+    85  000084  6E8A               	movwf	3978,c	;volatile
+    86                           
+    87                           ;App.c: 13: ANSELB = 0;
+    88  000086  0E00               	movlw	0
+    89  000088  010F               	movlb	15	; () banked
+    90  00008A  6F39               	movwf	57,b	;volatile
+    91                           
+    92                           ;App.c: 14: TRISB = 0;
+    93  00008C  0E00               	movlw	0
+    94  00008E  6E93               	movwf	3987,c	;volatile
+    95  000090                     l9:
+    96                           
+    97                           ;App.c: 17: {
+    98  000090  D7FF               	goto	l9
+    99  000092                     __end_of_main:
+   100                           	opt stack 0
+   101                           
+   102 ;; *************** function _Interrupt_Service *****************
+   103 ;; Defined at:
+   104 ;;		line 28 in file "App.c"
+   105 ;; Parameters:    Size  Location     Type
+   106 ;;		None
+   107 ;; Auto vars:     Size  Location     Type
+   108 ;;		None
+   109 ;; Return value:  Size  Location     Type
+   110 ;;                  1    wreg      void 
+   111 ;; Registers used:
+   112 ;;		None
+   113 ;; Tracked objects:
+   114 ;;		On entry : 0/0
+   115 ;;		On exit  : 0/0
+   116 ;;		Unchanged: 0/0
+   117 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK1
+      +1  BANK12  BANK13  BANK14  BANK15
+   118 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   119 ;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   120 ;;      Temps:         14       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   121 ;;      Totals:        14       0       0       0       0       0       0       0       0       0       0       0       
+      +0       0       0       0       0
+   122 ;;Total ram usage:       14 bytes
+   123 ;; Hardware stack levels used:    1
+   124 ;; This function calls:
+   125 ;;		Nothing
+   126 ;; This function is called by:
+   127 ;;		Interrupt level 2
+   128 ;; This function uses a non-reentrant model
+   129 ;;
+   130                           
+   131                           	psect	intcode
+   132  000008                     __pintcode:
+   133                           	opt stack 0
+   134  000008                     _Interrupt_Service:
+   135                           	opt stack 30
+   136                           
+   137                           ;incstack = 0
+   138  000008  820F               	bsf	btemp,1,c	;set compiler interrupt flag (level 2)
+   139  00000A  CFFA F001          	movff	pclath,??_Interrupt_Service
+   140  00000E  CFFB F002          	movff	pclatu,??_Interrupt_Service+1
+   141  000012  CFE9 F003          	movff	fsr0l,??_Interrupt_Service+2
+   142  000016  CFEA F004          	movff	fsr0h,??_Interrupt_Service+3
+   143  00001A  CFE1 F005          	movff	fsr1l,??_Interrupt_Service+4
+   144  00001E  CFE2 F006          	movff	fsr1h,??_Interrupt_Service+5
+   145  000022  CFD9 F007          	movff	fsr2l,??_Interrupt_Service+6
+   146  000026  CFDA F008          	movff	fsr2h,??_Interrupt_Service+7
+   147  00002A  CFF3 F009          	movff	prodl,??_Interrupt_Service+8
+   148  00002E  CFF4 F00A          	movff	prodh,??_Interrupt_Service+9
+   149  000032  CFF6 F00B          	movff	tblptrl,??_Interrupt_Service+10
+   150  000036  CFF7 F00C          	movff	tblptrh,??_Interrupt_Service+11
+   151  00003A  CFF8 F00D          	movff	tblptru,??_Interrupt_Service+12
+   152  00003E  CFF5 F00E          	movff	tablat,??_Interrupt_Service+13
+   153  000042  C00E  FFF5         	movff	??_Interrupt_Service+13,tablat
+   154  000046  C00D  FFF8         	movff	??_Interrupt_Service+12,tblptru
+   155  00004A  C00C  FFF7         	movff	??_Interrupt_Service+11,tblptrh
+   156  00004E  C00B  FFF6         	movff	??_Interrupt_Service+10,tblptrl
+   157  000052  C00A  FFF4         	movff	??_Interrupt_Service+9,prodh
+   158  000056  C009  FFF3         	movff	??_Interrupt_Service+8,prodl
+   159  00005A  C008  FFDA         	movff	??_Interrupt_Service+7,fsr2h
+   160  00005E  C007  FFD9         	movff	??_Interrupt_Service+6,fsr2l
+   161  000062  C006  FFE2         	movff	??_Interrupt_Service+5,fsr1h
+   162  000066  C005  FFE1         	movff	??_Interrupt_Service+4,fsr1l
+   163  00006A  C004  FFEA         	movff	??_Interrupt_Service+3,fsr0h
+   164  00006E  C003  FFE9         	movff	??_Interrupt_Service+2,fsr0l
+   165  000072  C002  FFFB         	movff	??_Interrupt_Service+1,pclatu
+   166  000076  C001  FFFA         	movff	??_Interrupt_Service,pclath
+   167  00007A  920F               	bcf	btemp,1,c	;clear compiler interrupt flag (level 2)
+   168  00007C  0011               	retfie		f
+   169  00007E                     __end_of_Interrupt_Service:
+   170                           	opt stack 0
+   171  0000                     pclatu	equ	0xFFB
+   172                           pclath	equ	0xFFA
+   173                           tblptru	equ	0xFF8
+   174                           tblptrh	equ	0xFF7
+   175                           tblptrl	equ	0xFF6
+   176                           tablat	equ	0xFF5
+   177                           prodh	equ	0xFF4
+   178                           prodl	equ	0xFF3
+   179                           fsr0h	equ	0xFEA
+   180                           fsr0l	equ	0xFE9
+   181                           fsr1h	equ	0xFE2
+   182                           fsr1l	equ	0xFE1
+   183                           fsr2h	equ	0xFDA
+   184                           fsr2l	equ	0xFD9
+   185                           pclatu	equ	0xFFB
+   186                           pclath	equ	0xFFA
+   187                           tblptru	equ	0xFF8
+   188                           tblptrh	equ	0xFF7
+   189                           tblptrl	equ	0xFF6
+   190                           tablat	equ	0xFF5
+   191                           prodh	equ	0xFF4
+   192                           prodl	equ	0xFF3
+   193                           fsr0h	equ	0xFEA
+   194                           fsr0l	equ	0xFE9
+   195                           fsr1h	equ	0xFE2
+   196                           fsr1l	equ	0xFE1
+   197                           fsr2h	equ	0xFDA
+   198                           fsr2l	equ	0xFD9
+   199                           
+   200                           	psect	rparam
+   201  0000                     pclatu	equ	0xFFB
+   202                           pclath	equ	0xFFA
+   203                           tblptru	equ	0xFF8
+   204                           tblptrh	equ	0xFF7
+   205                           tblptrl	equ	0xFF6
+   206                           tablat	equ	0xFF5
+   207                           prodh	equ	0xFF4
+   208                           prodl	equ	0xFF3
+   209                           fsr0h	equ	0xFEA
+   210                           fsr0l	equ	0xFE9
+   211                           fsr1h	equ	0xFE2
+   212                           fsr1l	equ	0xFE1
+   213                           fsr2h	equ	0xFDA
+   214                           fsr2l	equ	0xFD9
+   215                           
+   216                           	psect	temp
+   217  00000F                     btemp:
+   218                           	opt stack 0
+   219  00000F                     	ds	1
+   220  0000                     int$flags	set	btemp
+   221                           pclatu	equ	0xFFB
+   222                           pclath	equ	0xFFA
+   223                           tblptru	equ	0xFF8
+   224                           tblptrh	equ	0xFF7
+   225                           tblptrl	equ	0xFF6
+   226                           tablat	equ	0xFF5
+   227                           prodh	equ	0xFF4
+   228                           prodl	equ	0xFF3
+   229                           fsr0h	equ	0xFEA
+   230                           fsr0l	equ	0xFE9
+   231                           fsr1h	equ	0xFE2
+   232                           fsr1l	equ	0xFE1
+   233                           fsr2h	equ	0xFDA
+   234                           fsr2l	equ	0xFD9
+
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        0
+    BSS         0
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMRAM           94     14      14
+    BANK0           160      0       0
+    BANK1           256      0       0
+    BANK2           256      0       0
+    BANK3           256      0       0
+    BANK4           256      0       0
+    BANK5           256      0       0
+    BANK6           256      0       0
+    BANK7           256      0       0
+    BANK8           256      0       0
+    BANK9           256      0       0
+    BANK10          256      0       0
+    BANK11          256      0       0
+    BANK12          256      0       0
+    BANK13          256      0       0
+    BANK14          256      0       0
+    BANK15           56      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMRAM
+
+    None.
+
+Critical Paths under _Interrupt_Service in COMRAM
+
+    None.
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK2
+
+    None.
+
+Critical Paths under _main in BANK3
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK3
+
+    None.
+
+Critical Paths under _main in BANK4
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK4
+
+    None.
+
+Critical Paths under _main in BANK5
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK5
+
+    None.
+
+Critical Paths under _main in BANK6
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK6
+
+    None.
+
+Critical Paths under _main in BANK7
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK7
+
+    None.
+
+Critical Paths under _main in BANK8
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK8
+
+    None.
+
+Critical Paths under _main in BANK9
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK9
+
+    None.
+
+Critical Paths under _main in BANK10
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK10
+
+    None.
+
+Critical Paths under _main in BANK11
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK11
+
+    None.
+
+Critical Paths under _main in BANK12
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK12
+
+    None.
+
+Critical Paths under _main in BANK13
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK13
+
+    None.
+
+Critical Paths under _main in BANK14
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK14
+
+    None.
+
+Critical Paths under _main in BANK15
+
+    None.
+
+Critical Paths under _Interrupt_Service in BANK15
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 0
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (1) _Interrupt_Service                                   14    14      0       0
+                                              0 COMRAM    14    14      0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 1
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+
+ _Interrupt_Service (ROOT)
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BITCOMRAM           5E      0       0       0        0.0%
+EEDATA             400      0       0       0        0.0%
+NULL                 0      0       0       0        0.0%
+CODE                 0      0       0       0        0.0%
+COMRAM              5E      E       E       1       14.9%
+STACK                0      0       0       2        0.0%
+DATA                 0      0       0       3        0.0%
+BITBANK0            A0      0       0       4        0.0%
+BANK0               A0      0       0       5        0.0%
+BITBANK1           100      0       0       6        0.0%
+BANK1              100      0       0       7        0.0%
+BITBANK2           100      0       0       8        0.0%
+BANK2              100      0       0       9        0.0%
+BITBANK3           100      0       0      10        0.0%
+BANK3              100      0       0      11        0.0%
+ABS                  0      0       0      12        0.0%
+BITBANK4           100      0       0      13        0.0%
+BANK4              100      0       0      14        0.0%
+BITBANK5           100      0       0      15        0.0%
+BANK5              100      0       0      16        0.0%
+BITBANK6           100      0       0      17        0.0%
+BANK6              100      0       0      18        0.0%
+BITBANK7           100      0       0      19        0.0%
+BANK7              100      0       0      20        0.0%
+BITBANK8           100      0       0      21        0.0%
+BANK8              100      0       0      22        0.0%
+BITBANK9           100      0       0      23        0.0%
+BANK9              100      0       0      24        0.0%
+BITBANK10          100      0       0      25        0.0%
+BANK10             100      0       0      26        0.0%
+BITBANK11          100      0       0      27        0.0%
+BANK11             100      0       0      28        0.0%
+BITBANK12          100      0       0      29        0.0%
+BANK12             100      0       0      30        0.0%
+BITBANK13          100      0       0      31        0.0%
+BANK13             100      0       0      32        0.0%
+BITBANK14          100      0       0      33        0.0%
+BANK14             100      0       0      34        0.0%
+BITBANK15           38      0       0      35        0.0%
+BANK15              38      0       0      36        0.0%
+BIGRAM             F37      0       0      37        0.0%
+BITSFR_1             0      0       0      40        0.0%
+SFR_1                0      0       0      40        0.0%
+BITSFR               0      0       0      40        0.0%
+SFR                  0      0       0      40        0.0%
+
+
+Microchip Technology PIC18 Macro Assembler V1.36 build -262312587 
+Symbol Table                                                                                   Tue Aug 23 22:18:34 2016
+
+         _Interrupt_Service 0008                           l9 0090          ?_Interrupt_Service 0001  
+       ??_Interrupt_Service 0001                        _LATB 000F8A                        _main 0082  
+                      fsr0h 000FEA                        fsr1h 000FE2                        fsr0l 000FE9  
+                      fsr2h 000FDA                        fsr1l 000FE1                        fsr2l 000FD9  
+                      btemp 000F                        pclat 000FFA                        prodh 000FF4  
+                      prodl 000FF3                        start 007E   __end_of_Interrupt_Service 007E  
+              ___param_bank 000010                       ?_main 0001                       _TRISB 000F93  
+                     tablat 000FF5             __initialization 0092                __end_of_main 0092  
+                    ??_main 000F               __activetblptr 000000                      _ANSELB 000F39  
+__size_of_Interrupt_Service 0076                      tblptrh 000FF7                      tblptrl 000FF6  
+                    tblptru 000FF8                  __accesstop 0060     __end_of__initialization 0092  
+             ___rparam_used 000001              __pcstackCOMRAM 0001                     __Hparam 0000  
+                   __Lparam 0000                     __pcinit 0092                     __ramtop 1000  
+                   __ptext0 0082        end_of_initialization 0092         start_initialization 0092  
+                 __pintcode 0008                    __Hrparam 0000                    __Lrparam 0000  
+             __size_of_main 0010                    int$flags 000F                    intlevel2 0000  

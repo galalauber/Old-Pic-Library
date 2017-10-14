@@ -9,16 +9,18 @@
 
 
 /* 2. Numero de amostras
- * Define o numero de grandezas
+ * Define o numero de grandezas e enumera as grandezas
  */
-#define MEDIDAS_NUMERO_DE_GRANDEZAS             2
+#define MEDIDAS_NUMERO_DE_GRANDEZAS              2
+#define TEMPERATURA1	                           0
+#define TEMPERATURA2		                      1
+
 
 
 /* 2. Numero de amostras
  * Define o numero de amostras feitas para cada grandeza
  */
 #define MEDIDAS_NUMERO_DE_AMOSTRAS              5
-
 
 
 

@@ -54,7 +54,7 @@ void DS1307_Inicializacao (void)
  * DS1307_LeDataHoras
  * Le Data e Horario no dispositivo e atualiza o registradores do Relogio
  */
-void DS1307_LeDataHoras(_DataHoras *DataHoras)
+void DS1307_LeDataHoras(ObjDataHoras *DataHoras)
 {
     Uchar Dados[7];
     
@@ -76,7 +76,7 @@ void DS1307_LeDataHoras(_DataHoras *DataHoras)
  * DS1307_EscreveDataHoras
  * Escreve o novo horario no dispositivo
  */
-void DS1307_EscreveDataHoras(_DataHoras *DataHoras)
+void DS1307_EscreveDataHoras(ObjDataHoras *DataHoras)
 {
     Uchar Dados[9];
     

@@ -28,10 +28,36 @@ _CtrlRotinas    CtrlRotinas;
  */
 void Rotinas_Inicializacao (void)
 {
-    CtrlRotinas.Controle.Cabecalho1 = _SIM;
+    Rotinas_ConfiguraNivel (0,0,2);
+    
+    CtrlRotinas.Atualizacao.Tempo_ms = (Uint)_ROTINAS_TEMPO_DE_ATUALIZACAO_MS;
+    CtrlRotinas.TempoDeRetorno = ((Ulong)_ROTINAS_TEMPO_RETORNO_HOME_S * 1000);
+    CtrlRotinas.Nivel[0].Controle.ExecutarCabecalho = _SIM;
+
     Rotinas_ArmazenaFluxo();
 }
 
+
+/*
+ * Rotinas_Monitor
+ * Faz o monitoramento do controle das rotinas
+ */
+void Rotinas_Monitor (void)
+{
+    if (--CtrlRotinas.Atualizacao.Tempo_ms == 0)
+    {
+        CtrlRotinas.Atualizacao.Tempo_ms = _ROTINAS_TEMPO_DE_ATUALIZACAO_MS;
+        CtrlRotinas.Atualizacao.Sinais.Atualizar = _SIM;
+    }
+    
+    if (CtrlRotinas.TempoDeRetorno > 0)
+    {
+        if (--CtrlRotinas.TempoDeRetorno == 0)
+        {
+            Rotinas_Inicializacao();           
+        }
+    }
+}
 
 /*
  * Rotinas_ArmazenaFluxo
@@ -39,17 +65,12 @@ void Rotinas_Inicializacao (void)
  */
 void Rotinas_ArmazenaFluxo (void)
 {
-    CtrlRotinas.Retorno.Nivel1.Valor = CtrlRotinas.Fluxo.Nivel1.Valor;
-    CtrlRotinas.Retorno.Nivel1.ValorMaximo = CtrlRotinas.Fluxo.Nivel1.ValorMaximo;      
+    Uchar i;
     
-    CtrlRotinas.Retorno.Nivel2.Valor = CtrlRotinas.Fluxo.Nivel2.Valor;
-    CtrlRotinas.Retorno.Nivel2.ValorMaximo = CtrlRotinas.Fluxo.Nivel2.ValorMaximo;    
-    
-    CtrlRotinas.Retorno.Nivel3.Valor = CtrlRotinas.Fluxo.Nivel3.Valor;
-    CtrlRotinas.Retorno.Nivel3.ValorMaximo = CtrlRotinas.Fluxo.Nivel3.ValorMaximo;    
-    
-    CtrlRotinas.Retorno.Nivel4.Valor = CtrlRotinas.Fluxo.Nivel4.Valor;
-    CtrlRotinas.Retorno.Nivel4.ValorMaximo = CtrlRotinas.Fluxo.Nivel4.ValorMaximo;
+    for (i = 0; i < _ROTINAS_NUMERO_DE_NIVEIS; i++)
+    {
+       CtrlRotinas.Nivel[i].Memoria = CtrlRotinas.Nivel[i].Valor; 
+    }
 }
 
 /*
@@ -58,27 +79,33 @@ void Rotinas_ArmazenaFluxo (void)
  */
 void Rotinas_RestauraFluxo (void)
 {
-    CtrlRotinas.Fluxo.Nivel1.Valor = CtrlRotinas.Retorno.Nivel1.Valor;
-    CtrlRotinas.Fluxo.Nivel1.ValorMaximo= CtrlRotinas.Retorno.Nivel1.ValorMaximo;    
-
-    CtrlRotinas.Fluxo.Nivel2.Valor = CtrlRotinas.Retorno.Nivel2.Valor;
-    CtrlRotinas.Fluxo.Nivel2.ValorMaximo= CtrlRotinas.Retorno.Nivel2.ValorMaximo;      
+    Uchar i;
     
-    CtrlRotinas.Fluxo.Nivel3.Valor = CtrlRotinas.Retorno.Nivel3.Valor;
-    CtrlRotinas.Fluxo.Nivel3.ValorMaximo= CtrlRotinas.Retorno.Nivel3.ValorMaximo;      
+    for (i = 0; i < _ROTINAS_NUMERO_DE_NIVEIS; i++)
+    {
+       CtrlRotinas.Nivel[i].Valor = CtrlRotinas.Nivel[i].Memoria; 
+    }
+}
 
-    CtrlRotinas.Fluxo.Nivel4.Valor = CtrlRotinas.Retorno.Nivel4.Valor;
-    CtrlRotinas.Fluxo.Nivel4.ValorMaximo= CtrlRotinas.Retorno.Nivel4.ValorMaximo;      
+/*
+ * Rotinas_ConfiguraNivel
+ * Carrega os valores de determinado nivel do controle de fluxo.
+ */
+void Rotinas_ConfiguraNivel (Uchar Nivel, Uchar Valor, Uchar Maximo)
+{
+    CtrlRotinas.Nivel[Nivel].Valor = Valor;
+    CtrlRotinas.Nivel[Nivel].ValorMaximo = Maximo;
+    CtrlRotinas.Nivel[Nivel + 1].Controle.ExecutarCabecalho = _SIM; 
 }
 
 /*
  * Rotinas_CarregaNivel
- * Carrega os valores de determinado nivel do controle de fluxo.
+ * Carrega o valor do nivel especificado
  */
-void Rotinas_CarregaNivel (_Nivel *Nivel, Uchar Valor, Uchar Maximo)
+void Rotinas_CarregaNivel (Uchar Nivel, Uchar Valor)
 {
-    Nivel->Valor = Valor;
-    Nivel->ValorMaximo = Maximo;
+    CtrlRotinas.Nivel[Nivel].Valor = Valor;
+    CtrlRotinas.Nivel[Nivel + 1].Controle.ExecutarCabecalho = _SIM;    
 }
 
 /*
@@ -86,14 +113,13 @@ void Rotinas_CarregaNivel (_Nivel *Nivel, Uchar Valor, Uchar Maximo)
  * Incrementa o valor do nivel especificado do controle de fluxo impedindo
  * que o valor máximo seja ultrapassado.
  */
-void Rotinas_IncrementaNivel (_Nivel *Nivel)
+void Rotinas_IncrementaNivel (Uchar Nivel)
 {
-    Nivel->Valor++;
-    
-    if (Nivel->Valor > Nivel->ValorMaximo)
+    if (CtrlRotinas.Nivel[Nivel].Valor < CtrlRotinas.Nivel[Nivel].ValorMaximo)
     {
-        Nivel->Valor = Nivel->ValorMaximo;
-    } 
+        CtrlRotinas.Nivel[Nivel].Valor++;
+        CtrlRotinas.Nivel[Nivel + 1].Controle.ExecutarCabecalho = _SIM;
+    }
 }
 
 /*
@@ -101,23 +127,22 @@ void Rotinas_IncrementaNivel (_Nivel *Nivel)
  * Decrementa o valor do nivel especificado do controle de fluxo impedindo
  * que o valor minimo seja menor que 1.
  */
-void Rotinas_DecrementaNivel (_Nivel *Nivel)
+void Rotinas_DecrementaNivel (Uchar Nivel)
 {
-    Nivel->Valor--;
-    
-    if (Nivel->Valor < 1)
+    if (CtrlRotinas.Nivel[Nivel].Valor > 0)
     {
-        Nivel->Valor = 1;
-    } 
+        CtrlRotinas.Nivel[Nivel].Valor--;
+        CtrlRotinas.Nivel[Nivel + 1].Controle.ExecutarCabecalho = _SIM;
+    }
 }
 
-/*
- * Rotinas_PedidoDeAtualizacao
+/*    
+ * Rotinas_ObrigaAtualizacao
  * Força a tualização da rotina
  */
-void Rotinas_PedidoDeAtualizacao (void)
+void Rotinas_ObrigaAtualizacao (void)
 {
-    CtrlRotinas.Controle.Atualizacao = _SIM;
+    CtrlRotinas.Atualizacao.Sinais.Atualizar = _SIM;
 }
 
 /*
@@ -127,9 +152,9 @@ void Rotinas_PedidoDeAtualizacao (void)
  */
 unsigned char Rotinas_Atualizacao (void)
 {
-    if (CtrlRotinas.Controle.Atualizacao == _SIM)
+    if (CtrlRotinas.Atualizacao.Sinais.Atualizar == _SIM)
     {
-        CtrlRotinas.Controle.Atualizacao = _NAO;
+        CtrlRotinas.Atualizacao.Sinais.Atualizar = _NAO;
         return 1;
     }
     else  return 0;
@@ -143,50 +168,16 @@ unsigned char Rotinas_Atualizacao (void)
  * controla o fluxo da rotina é atualizado para 1 e um evento é gerado para
  * forçar  a atualização da rotina.
  */
-unsigned char Rotinas_ExecutarCabecalho (unsigned char Nivel)
+unsigned char Rotinas_ExecutarCabecalho (Uchar Nivel)
 {
-    unsigned char Retorno;
-    
-    Retorno = _NAO;
-    
-    switch (Nivel)
-    {
-        case 1:
-            if (CtrlRotinas.Controle.Cabecalho1 == 1)
-            {
-                CtrlRotinas.Controle.Cabecalho1 = 0;
-                Rotinas_PedidoDeAtualizacao();
-                Retorno = _SIM;
-            }
-            break;
-        
-        case 2:
-            if (CtrlRotinas.Controle.Cabecalho2 == 1)
-            {
-                CtrlRotinas.Controle.Cabecalho2 = 0;
-                Rotinas_PedidoDeAtualizacao();
-                Retorno = _SIM;
-            }
-            break;
-            
-        case 3:
-            if (CtrlRotinas.Controle.Cabecalho3 == 1)
-            {
-                CtrlRotinas.Controle.Cabecalho3 = 0;
-                Rotinas_PedidoDeAtualizacao();
-                Retorno = _SIM;
-            }
-            break;
+    Uchar Retorno = _NAO;
 
-        case 4:
-            if (CtrlRotinas.Controle.Cabecalho4 == 1)
-            {
-                CtrlRotinas.Controle.Cabecalho4 = 0;
-                Rotinas_PedidoDeAtualizacao();
-                Retorno = _SIM;
-            }
+    if (CtrlRotinas.Nivel[Nivel].Controle.ExecutarCabecalho == _SIM)
+    {
+        CtrlRotinas.Nivel[Nivel].Controle.ExecutarCabecalho = _NAO;
+        Rotinas_ObrigaAtualizacao();
+        Retorno = _SIM;        
     }
-    
     return Retorno;
 }
 

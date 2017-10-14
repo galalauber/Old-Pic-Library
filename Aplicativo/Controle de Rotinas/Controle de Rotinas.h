@@ -10,70 +10,72 @@
 #include "Definicoes Gerais.h"
 
 //Definicoes do módulo --------------------------------------------------------
-
-
+#define _ROTINAS_TEMPO_DE_ATUALIZACAO_MS            250
+#define _ROTINAS_TEMPO_RETORNO_HOME_S               120
+#define _ROTINAS_NUMERO_DE_NIVEIS                   3
 
 
 //Estruturas do módulo --------------------------------------------------------
 typedef struct
 {
     Uchar Valor;
-    Uchar ValorMaximo;     
+    Uchar ValorMaximo;
+    Uchar Memoria;
+    
+    union
+    {
+        Uchar Valor;
+        
+        struct
+        {
+            Uint ExecutarCabecalho:1;
+        };
+    }Controle;
 }_Nivel;
 
 
 typedef struct
 {
-    struct
-    {
-        _Nivel Nivel1;
-        _Nivel Nivel2;
-        _Nivel Nivel3;
-        _Nivel Nivel4;
-    }Fluxo;
+    _Nivel  Nivel[_ROTINAS_NUMERO_DE_NIVEIS];    
+    Ulong   TempoDeRetorno;
     
     struct
-    {
-        _Nivel Nivel1;
-        _Nivel Nivel2;
-        _Nivel Nivel3;
-        _Nivel Nivel4;
-    }Retorno;
-    
-    union
     {  
-        Uchar valor;
+        Uint Tempo_ms;
         
-        struct
+        union
         {
-            Uint Cabecalho1:1;
-            Uint Cabecalho2:1;
-            Uint Cabecalho3:1; 
-            Uint Cabecalho4:1;             
-            Uint Atualizacao:1;
-        };
-    }Controle;
+            Uchar Valor;
+            
+            struct
+            {
+                Uint Atualizar:1;
+            };            
+        }Sinais;
+    }Atualizacao;
 }_CtrlRotinas;
 
 
 
 //Publicação das funções do módulo --------------------------------------------
 void Rotinas_Inicializacao (void);
+void Rotinas_Monitor (void);
 void Rotinas_ArmazenaFluxo (void);
 void Rotinas_RestauraFluxo (void);
-void Rotinas_PedidoDeAtualizacao (void);
-void Rotinas_CarregaNivel (_Nivel *Nivel, Uchar Valor, Uchar Maximo);
-void Rotinas_IncrementaNivel (_Nivel *Nivel);
-void Rotinas_DecrementaNivel (_Nivel *Nivel);
+void Rotinas_ObrigaAtualizacao(void);
+void Rotinas_ConfiguraNivel (Uchar Nivel, Uchar Valor, Uchar Maximo);
+void Rotinas_CarregaNivel (Uchar Nivel, Uchar Valor);
+void Rotinas_IncrementaNivel (Uchar Nivel);
+void Rotinas_DecrementaNivel (Uchar Nivel);
 
-unsigned char Rotinas_ExecutarCabecalho (unsigned char Nivel);
+unsigned char Rotinas_ExecutarCabecalho (Uchar Nivel);
 unsigned char Rotinas_Atualizacao (void);
 
 
 
 
 //Publicação das variáveis do módulo ------------------------------------------
-_CtrlRotinas    CtrlRotinas;
+extern _CtrlRotinas    CtrlRotinas;
 
 #endif	/* CONTROLE_DE_ROTINAS_H */
 
